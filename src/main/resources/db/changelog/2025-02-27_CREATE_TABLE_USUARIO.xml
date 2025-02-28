@@ -12,7 +12,7 @@
 		</preConditions>
 
 		<createTable tableName="usuario">
-            <column name="id" type="BIGINT">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             

@@ -12,12 +12,12 @@
 		</preConditions>
 
 		<createTable tableName="evento_categoria">
-			<column name="id_evento" type="BIGINT">
+			<column name="id_evento" type="VARCHAR(36)">
 				<constraints primaryKey="true" nullable="false"
 					foreignKeyName="fk_evento_categoria_evento"
 					referencedTableName="evento" referencedColumnNames="id" />
 			</column>
-			<column name="id_categoria" type="BIGINT">
+			<column name="id_categoria" type="VARCHAR(36)">
 				<constraints primaryKey="true" nullable="false"
 					foreignKeyName="fk_evento_categoria_categoria"
 					referencedTableName="categoria" referencedColumnNames="id" />

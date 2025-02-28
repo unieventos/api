@@ -12,16 +12,16 @@
 		</preConditions>
 		
 		<createTable tableName="usuario_evento_permissao">
-            <column name="id" type="BIGINT">
+            <column name="id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             
-            <column name="id_evento" type="BIGINT">
+            <column name="id_evento" type="VARCHAR(36)">
                 <constraints nullable="false" foreignKeyName="fk_usuario_evento_permissao_evento"
                              referencedTableName="evento" referencedColumnNames="id"/>
             </column>
             
-            <column name="id_usuario" type="BIGINT">
+            <column name="id_usuario" type="VARCHAR(36)">
                 <constraints nullable="false" foreignKeyName="fk_usuario_evento_permissao_usuario"
                              referencedTableName="usuario" referencedColumnNames="id"/>
             </column>

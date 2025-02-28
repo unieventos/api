@@ -11,7 +11,7 @@
 			</not>
 		</preConditions>
 		<createTable tableName="evento">
-			<column name="id" type="BIGINT">
+			<column name="id" type="VARCHAR(36)">
 				<constraints primaryKey="true" nullable="false" />
 			</column>
 			<column name="nome_evento" type="VARCHAR(255)">
@@ -24,7 +24,7 @@
 			<column name="data_fim" type="DATE">
 				<constraints nullable="false" />
 			</column>
-			<column name="usuario_criador" type="BIGINT">
+			<column name="usuario_criador" type="VARCHAR(36)">
 				<constraints nullable="false"
 					foreignKeyName="fk_evento_usuario" referencedTableName="usuario"
 					referencedColumnNames="id" />
