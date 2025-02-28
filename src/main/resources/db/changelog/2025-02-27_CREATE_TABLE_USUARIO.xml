@@ -12,7 +12,7 @@
 		</preConditions>
 
 		<createTable tableName="usuario">
-            <column name="id" type="VARCHAR(36)">
+            <column name="usuario_id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             
@@ -29,10 +29,6 @@
             </column>
             
             <column name="nome" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            
-            <column name="status" type="BIT">
                 <constraints nullable="false"/>
             </column>
             

@@ -15,7 +15,7 @@ spring:
 
 
 server:
-  port: 5555
+  port: ${UNI_PORT:5555}
   servlet:
     context-path: /unieventos
   error:

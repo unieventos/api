@@ -8,6 +8,6 @@ databaseChangeLog:
   - include:
       file: db/changelog/2025-02-27_CREATE_TABLE_EVENTO_CATEGORIA.xml
   - include:
-      file: db/changelog/2025-02-27_CREATE_TABLE_EVENTO_USUARIO_PERMISSAO.xml
+      file: db/changelog/2025-02-27_CREATE_TABLE_USUARIO_EVENTO_PERMISSAO.xml
   - include:
-      file: db/changelog/2025-02-27_CREATE_TABLE_FOTOS.xml
+      file: db/changelog/2025-02-27_CREATE_TABLE_FOTO.xml

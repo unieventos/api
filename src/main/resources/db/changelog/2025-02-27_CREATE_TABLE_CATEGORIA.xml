@@ -12,15 +12,11 @@
 		</preConditions>
 		
 		<createTable tableName="categoria">
-            <column name="id" type="VARCHAR(36)">
+            <column name="categoria_id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             
             <column name="nome_categoria" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            
-            <column name="ativa" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
         </createTable>

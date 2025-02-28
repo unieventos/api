@@ -1,5 +1,6 @@
 package br.com.unisagrado.Unisagrado.unieventos.model;
 
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -9,14 +10,18 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
-@Entity(name = "usuario")
+@Entity
 @Table(name = "usuario")
 public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
+	@Column(name = "usuario_id")
 	private String id;
 	
 	@Column(nullable = false)
@@ -31,25 +36,36 @@ public class Usuario {
 	@Column(nullable = false)
 	private String nome;
 	
-	@Column(nullable = false)
-	private boolean status;
+	@ManyToMany
+	@JoinTable(
+			  name = "usuario_evento_permissao", 
+			  joinColumns = @JoinColumn(name = "usuario_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "evento_id"))
+	private Set<Evento> eventosPermissao;
 	
 	@Enumerated(EnumType.STRING)
-	private AcessoUsuario tipo_acesso;
+	@Column(name = "tipo_acesso", nullable = false)
+	private AcessoUsuario tipoAcesso;
 
 	public Usuario() {
 		this.setId(UUID.randomUUID().toString());
 	}
 	
-	public Usuario(String id, String curso, String email, String senha, String nome, boolean status,
-			AcessoUsuario tipo_acesso) {
+	public Usuario(String id, String curso, String email, String senha, String nome, AcessoUsuario tipoAcesso) {
 		this.id = id;
 		this.curso = curso;
 		this.email = email;
 		this.senha = senha;
 		this.nome = nome;
-		this.status = status;
-		this.tipo_acesso = tipo_acesso;
+		this.tipoAcesso = tipoAcesso;
+	}
+
+	public Set<Evento> getEventosPermissao() {
+		return eventosPermissao;
+	}
+
+	public void setEventosPermissao(Set<Evento> eventosPermissao) {
+		this.eventosPermissao = eventosPermissao;
 	}
 
 	public String getId() {
@@ -92,20 +108,12 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	public boolean isStatus() {
-		return status;
+	public AcessoUsuario getTipoAcesso() {
+		return tipoAcesso;
 	}
 
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
-
-	public AcessoUsuario getTipo_acesso() {
-		return tipo_acesso;
-	}
-
-	public void setTipo_acesso(AcessoUsuario tipo_acesso) {
-		this.tipo_acesso = tipo_acesso;
+	public void setTipoAcesso(AcessoUsuario tipoAcesso) {
+		this.tipoAcesso = tipoAcesso;
 	}
 
 }
