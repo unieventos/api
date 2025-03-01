@@ -18,11 +18,11 @@ server:
   port: ${UNI_PORT:5555}
   servlet:
     context-path: /unieventos
-  error:
-    include-message: never
-    include-binding-errors: never
-    include-stacktrace: never
-    include-exception: false
+#  error:
+#    include-message: never
+#    include-binding-errors: never
+#    include-stacktrace: never
+#    include-exception: false
 
 management:
   endpoints:
