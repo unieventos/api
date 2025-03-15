@@ -14,7 +14,7 @@ public class UsuarioResource extends RepresentationModel<UsuarioResource> {
 		add(WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findUsuarioById(usuarioDTOV1.id()))
 				.withSelfRel());
-	}
+	} 
 
 	public UsuarioDTOV1 getProduct() {
 		return usuarioDTOV1;

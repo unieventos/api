@@ -1,8 +1,12 @@
 package br.com.unisagrado.Unisagrado.unieventos.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +21,12 @@ public class UsuarioController {
 	private FindUsuarioUseCase useCase;
 	
 	@GetMapping("/{id}")
-	public UsuarioResource findUsuarioById(@PathVariable("id") String id){
-		return new UsuarioResource(useCase.findById("da67fa3f-e7d8-43c4-87ea-c96cb71971dd"));
+	public ResponseEntity<UsuarioResource> findUsuarioById(@PathVariable("id") String id){
+		return new ResponseEntity<UsuarioResource>(new UsuarioResource(useCase.findById(id)),HttpStatus.OK);
 	}
 	
+	@PostMapping
+	public UsuarioResource createUser(@PathVariable("id") String id){
+		return new UsuarioResource(useCase.findById(id));
+	}
 }
