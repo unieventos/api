@@ -11,11 +11,16 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
+  
 
-
+unisagrado:
+  default:
+    admin-user:
+      name: ${DEFAULT_ADMIN_USERNAME:}
+      password: ${DEFAULT_ADMIN_PASSWORD:}
 
 server:
-  port: ${UNI_PORT:5555}
+  port: ${UNI_PORT:8080}
   servlet:
     context-path: /unieventos
 #  error:
