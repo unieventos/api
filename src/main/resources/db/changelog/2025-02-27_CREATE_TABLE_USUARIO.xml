@@ -15,9 +15,15 @@
             <column name="usuario_id" type="VARCHAR(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
+
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
             
-            <column name="curso" type="VARCHAR(255)">
-                <constraints nullable="false"/>
+            <column name="curso_id" type="BIGINT(20)">
+                <constraints nullable="false"
+                         foreignKeyName="fk_usuario_curso"
+                         referencedTableName="curso" referencedColumnNames="curso_id" />
             </column>
             
             <column name="email" type="VARCHAR(255)">
@@ -31,11 +37,15 @@
             <column name="nome" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            
-            <column name="tipo_acesso" type="VARCHAR(50)">
+
+            <column name="sobrenome" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            
+
+            <column name="is_active" type="TINYINT(1)" defaultValue="1">
+                <constraints nullable="false"/>
+            </column>
+
         </createTable>
 	</changeSet>
 

@@ -41,7 +41,7 @@ public class Evento {
 	@JoinTable(name = "usuario_evento_permissao", joinColumns = @JoinColumn(name = "evento_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
 	private Set<Usuario> usuariosPermissao;
 
-	@OneToMany(mappedBy = "evento")
+	@OneToMany
 	private Set<Foto> fotos;
 
 	public Evento() {

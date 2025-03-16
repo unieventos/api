@@ -20,10 +20,6 @@ public class Foto {
 
 	private String path;
 
-	@ManyToOne
-	@JoinColumn(name = "evento_id", nullable = false)
-	private Evento evento;
-
 	public Foto(String id, String path) {
 		this.id = id;
 		this.path = path;
@@ -32,18 +28,9 @@ public class Foto {
 	public Foto(String id, String path, Evento evento) {
 		this.id = id;
 		this.path = path;
-		this.evento = evento;
 	}
 
 	public Foto() {
-	}
-
-	public Evento getEvento() {
-		return evento;
-	}
-
-	public void setEvento(Evento evento) {
-		this.evento = evento;
 	}
 
 	public String getId() {

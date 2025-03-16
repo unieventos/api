@@ -1,0 +1,141 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+	<changeSet author="unieventos" id="1742127152388">
+		<preConditions>
+			<tableExists tableName="curso" />
+		</preConditions>
+
+		<insert tableName="curso">
+			<column name="nome" value="Administração" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Arquitetura e Urbanismo" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Artes" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Biomedicina" />
+		</insert>
+
+		<insert tableName="curso">
+			<column name="nome" value="Celulose e Papel" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Ciência da Computação" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Ciências Biológicas Bacharelado" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Ciências Biológicas Licenciatura" />
+		</insert>
+
+		<insert tableName="curso">
+			<column name="nome" value="Ciências Contábeis" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Design" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Design de Moda" />
+		</insert>
+
+		<insert tableName="curso">
+			<column name="nome" value="Educação Física - Bacharelado" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Educação Física - Licenciatura" />
+		</insert>
+
+
+
+		<insert tableName="curso">
+			<column name="nome" value="Enfermagem" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Engenharia Agronômica" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Engenharia Civil" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Engenharia de Computação" />
+		</insert>
+
+		<insert tableName="curso">
+			<column name="nome" value="Engenharia de Produção" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Engenharia Elétrica" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Engenharia Mecânica" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Engenharia Química" />
+		</insert>
+
+		<insert tableName="curso">
+			<column name="nome" value="Estética e Cosmética" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Farmácia" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Fisioterapia" />
+		</insert>
+
+		<insert tableName="curso">
+			<column name="nome" value="Gastronomia" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="História" />
+		</insert>
+
+
+		<insert tableName="curso">
+			<column name="nome" value="Jogos Digitais" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Jornalismo" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Letras - Português e Inglês - Licenciatura" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Letras - Tradutor - Bacharelado" />
+		</insert>
+
+		<insert tableName="curso">
+			<column name="nome" value="Matemática" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Nutrição" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Odontologia" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Pedagogia" />
+		</insert>
+
+		<insert tableName="curso">
+			<column name="nome" value="Psicologia" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Publicidade e Propaganda" />
+		</insert>
+		<insert tableName="curso">
+			<column name="nome" value="Relações Internacionais" />
+		</insert>
+
+		<insert tableName="curso">
+			<column name="nome" value="Teatro" />
+		</insert>
+	</changeSet>
+</databaseChangeLog>

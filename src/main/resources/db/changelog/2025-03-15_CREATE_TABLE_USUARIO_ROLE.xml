@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="unieventos" id="1742062868938">
+        <preConditions>
+            <not>
+                <tableExists tableName="usuario_role" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="usuario_role">
+        <column name="usuario_id" type="VARCHAR(36)">
+            <constraints nullable="false"
+                         foreignKeyName="fk_usuario_role_usuario"
+                         referencedTableName="usuario" referencedColumnNames="usuario_id" />
+        </column>
+
+        <column name="role_id" type="BIGINT(20)">
+            <constraints nullable="false"
+                         foreignKeyName="fk_usuario_role_role"
+                         referencedTableName="role" referencedColumnNames="role_id" />
+        </column>
+        </createTable>
+
+    </changeSet>
+</databaseChangeLog>
