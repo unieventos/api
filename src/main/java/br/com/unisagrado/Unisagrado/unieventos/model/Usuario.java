@@ -5,14 +5,14 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -23,9 +23,13 @@ public class Usuario {
 	@GeneratedValue(strategy = GenerationType.UUID)
 	@Column(name = "usuario_id")
 	private String id;
-	
-	@Column(nullable = false)
-	private String curso;
+
+	@Column(nullable = false, unique = true)
+	private String login;
+
+	@ManyToOne
+	@JoinColumn(name = "curso_id")
+	private Curso curso;
 	
 	@Column(nullable = false)
 	private String email;
@@ -35,6 +39,13 @@ public class Usuario {
 	
 	@Column(nullable = false)
 	private String nome;
+
+	@Column(nullable = false)
+	private String sobrenome;
+	
+	
+	@Column(nullable = false, name = "is_active")
+	private boolean isActive;
 	
 	@ManyToMany
 	@JoinTable(
@@ -42,22 +53,30 @@ public class Usuario {
 			  joinColumns = @JoinColumn(name = "usuario_id"), 
 			  inverseJoinColumns = @JoinColumn(name = "evento_id"))
 	private Set<Evento> eventosPermissao;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "tipo_acesso", nullable = false)
-	private AcessoUsuario tipoAcesso;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "usuario_role",
+			joinColumns = @JoinColumn(name = "usuario_id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id")
+	)
+	private Set<Role> roles;
 
 	public Usuario() {
 		this.setId(UUID.randomUUID().toString());
 	}
-	
-	public Usuario(String id, String curso, String email, String senha, String nome, AcessoUsuario tipoAcesso) {
+
+	public Usuario(String id, String login, Curso curso, String email, String senha, String nome, String sobrenome, boolean isActive, Set<Evento> eventosPermissao, Set<Role> roles) {
 		this.id = id;
+		this.login = login;
 		this.curso = curso;
 		this.email = email;
 		this.senha = senha;
 		this.nome = nome;
-		this.tipoAcesso = tipoAcesso;
+		this.sobrenome = sobrenome;
+		this.isActive = isActive;
+		this.eventosPermissao = eventosPermissao;
+		this.roles = roles;
 	}
 
 	public Set<Evento> getEventosPermissao() {
@@ -76,11 +95,11 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public String getCurso() {
+	public Curso getCurso() {
 		return curso;
 	}
 
-	public void setCurso(String curso) {
+	public void setCurso(Curso curso) {
 		this.curso = curso;
 	}
 
@@ -108,12 +127,35 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	public AcessoUsuario getTipoAcesso() {
-		return tipoAcesso;
+	public boolean getActive() {
+		return isActive;
 	}
 
-	public void setTipoAcesso(AcessoUsuario tipoAcesso) {
-		this.tipoAcesso = tipoAcesso;
+	public void setActive(boolean active) {
+		isActive = active;
 	}
 
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public String getSobrenome() {
+		return sobrenome;
+	}
+
+	public void setSobrenome(String sobrenome) {
+		this.sobrenome = sobrenome;
+	}
 }

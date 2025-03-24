@@ -17,11 +17,6 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             
-            <column name="evento_id" type="VARCHAR(36)">
-                <constraints nullable="false" foreignKeyName="fk_foto_evento"
-                             referencedTableName="evento" referencedColumnNames="evento_id"/>
-            </column>
-            
             <column name="path" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
