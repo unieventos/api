@@ -11,12 +11,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "evento")
-public class Evento {
+public class Evento implements ContemFoto{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -41,9 +40,6 @@ public class Evento {
 	@JoinTable(name = "usuario_evento_permissao", joinColumns = @JoinColumn(name = "evento_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
 	private Set<Usuario> usuariosPermissao;
 
-	@OneToMany
-	private Set<Foto> fotos;
-
 	public Evento() {
 	}
 
@@ -57,18 +53,7 @@ public class Evento {
 		this.usuarioCriador = usuarioCriador;
 	}
 
-	public Evento(String id, String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim,
-			String usuarioCriador, Set<Usuario> usuariosPermissao, Set<Foto> fotos) {
-		this.id = id;
-		this.nomeEvento = nomeEvento;
-		this.descricao = descricao;
-		this.dateInicio = dateInicio;
-		this.dateFim = dateFim;
-		this.usuarioCriador = usuarioCriador;
-		this.usuariosPermissao = usuariosPermissao;
-		this.fotos = fotos;
-	}
-
+	
 	public String getId() {
 		return id;
 	}
@@ -123,13 +108,5 @@ public class Evento {
 
 	public void setUsuariosPermissao(Set<Usuario> usuariosPermissao) {
 		this.usuariosPermissao = usuariosPermissao;
-	}
-
-	public Set<Foto> getFotos() {
-		return fotos;
-	}
-
-	public void setFotos(Set<Foto> fotos) {
-		this.fotos = fotos;
 	}
 }

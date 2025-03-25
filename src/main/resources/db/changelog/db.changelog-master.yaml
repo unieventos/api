@@ -21,3 +21,5 @@ databaseChangeLog:
       file: db/changelog/2025-03-15_CRIA_ROLES_PADROES.xml
   - include:
       file: db/changelog/2025-03-16_CRIA_CURSOS_PADROES.xml
+  - include:
+      file: db/changelog/2025-03-24_CREATE_TABLE_COMENTARIO.xml
