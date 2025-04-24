@@ -13,7 +13,7 @@
 
 		<createTable tableName="usuario">
             <column name="usuario_id" type="VARCHAR(36)">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true" nullable="false" />
             </column>
 
             <column name="login" type="VARCHAR(50)">

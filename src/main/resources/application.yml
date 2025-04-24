@@ -13,12 +13,6 @@ spring:
       ddl-auto: validate
   
 
-unisagrado:
-  default:
-    admin-user:
-      name: ${DEFAULT_ADMIN_USERNAME:}
-      password: ${DEFAULT_ADMIN_PASSWORD:}
-
 server:
   port: ${UNI_PORT:8080}
   servlet:

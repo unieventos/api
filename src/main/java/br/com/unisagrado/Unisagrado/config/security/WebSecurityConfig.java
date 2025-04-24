@@ -1,54 +1,43 @@
 package br.com.unisagrado.Unisagrado.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import br.com.unisagrado.Unisagrado.config.filters.JwtAuthenticationFilter;
+import br.com.unisagrado.Unisagrado.unieventos.service.ProfileService;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
+	
+	@Autowired
+	private JwtUtil jwtUtil;
+	
+	@Autowired
+	private ProfileService profileService;
 
-	@Value("${unisagrado.default.admin-user.name}")
-	private String userName;
-	
-	@Value("${unisagrado.default.admin-user.password}")
-	private String userPassword;
-	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-		http
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sem estado
-			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/", "/home", "/404").permitAll()
-				.anyRequest().authenticated()
-			)
-			.formLogin((form) -> form
-				.loginPage("/login")
-				.permitAll()
-			)
-			.logout((logout) -> logout.permitAll())
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authenticationProvider(authenticationProvider());
-
+		http.csrf(AbstractHttpConfigurer::disable)
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(
+						auth -> auth.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
+				.userDetailsService(userDetailsService)
+				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
@@ -60,29 +49,15 @@ public class WebSecurityConfig {
 		provider.setPasswordEncoder(passwordEncoder());
 		return provider;
 	}
-
+	
 	@Bean
-	public UserDetailsService userDetailsService() {
-		UserDetails user =
-			 User.withDefaultPasswordEncoder()
-				.username(userName)
-				.password(userPassword)
-				.roles("ADMIN")
-				.build();
-
-		return new InMemoryUserDetailsManager(user);
-	}
-
-	@Bean
-	public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		provider.setUserDetailsService(userDetailsService);
-		provider.setPasswordEncoder(passwordEncoder);
-		return new ProviderManager(provider);
-	}
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userDetailsService, profileService);
+        return filter;
+    }
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
+		return new BCryptPasswordEncoder(12);
 	}
 }

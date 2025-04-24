@@ -1,5 +1,7 @@
 package br.com.unisagrado.Unisagrado.unieventos.model;
 
+import java.util.UUID;
+
 import org.hibernate.annotations.Any;
 import org.hibernate.annotations.AnyDiscriminator;
 import org.hibernate.annotations.AnyDiscriminatorValue;
@@ -29,7 +31,7 @@ public class Foto {
 	@AnyDiscriminator(DiscriminatorType.STRING)
 	@AnyKeyJavaClass(Long.class)
 	@AnyDiscriminatorValue(discriminator = "EVENTO", entity = Evento.class)
-	@AnyDiscriminatorValue(discriminator = "COMENTARIO", entity = Evento.class)
+	@AnyDiscriminatorValue(discriminator = "COMENTARIO", entity = Comentario.class)
 	@Column(name = "detail_type")
 	@JoinColumn(name = "detail_id")
 	private ContemFoto alvo;
@@ -41,6 +43,7 @@ public class Foto {
 	}
 
 	public Foto() {
+		this.id = UUID.randomUUID().toString();
 	}
 
 	public String getId() {

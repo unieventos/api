@@ -1,6 +1,6 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/2025-03-15_CRIA_TABELA_CURSO.xml
+      file: db/changelog/2025-03-15_CREATE_TABLE_COURSE.xml
   - include:
       file: db/changelog/2025-02-27_CREATE_TABLE_USUARIO.xml
   - include:
@@ -18,8 +18,12 @@ databaseChangeLog:
   - include:
       file: db/changelog/2025-03-15_CREATE_TABLE_USUARIO_ROLE.xml
   - include:
-      file: db/changelog/2025-03-15_CRIA_ROLES_PADROES.xml
+      file: db/changelog/2025-03-15_CREATE_DEFAULT_ROLES.xml
   - include:
-      file: db/changelog/2025-03-16_CRIA_CURSOS_PADROES.xml
+      file: db/changelog/2025-03-16_CREATE_DEFAULT_CURSES.xml
   - include:
       file: db/changelog/2025-03-24_CREATE_TABLE_COMENTARIO.xml
+  - include:
+      file: db/changelog/2025-04-23_CREATE_DEFAULT_USER.xml
+  - include:
+      file: db/changelog/2025-04-23_CREATE_TABLE_PROFILE.xml

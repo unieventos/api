@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="unieventos" id="1745463832839">
+        <preConditions>
+            <not>
+                <tableExists tableName="profile" />
+            </not>
+        </preConditions>
+
+        <createTable tableName="profile">
+            <column name="id" type="BIGINT(20)" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="usuario_id" type="VARCHAR(36)">
+                <constraints nullable="false"
+                         foreignKeyName="fk_profile_usuario"
+                         referencedTableName="usuario" referencedColumnNames="usuario_id" />
+            </column>
+            <column name="token" type="VARCHAR(255)" />
+            <column name="expire" type="TIMESTAMP" />
+            <column name="stay_logged" type="TINYINT(1)" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addUniqueConstraint columnNames="token" tableName="profile"></addUniqueConstraint>
+
+    </changeSet>
+</databaseChangeLog>
