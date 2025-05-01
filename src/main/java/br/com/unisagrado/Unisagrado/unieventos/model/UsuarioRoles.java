@@ -1,5 +1,7 @@
 package br.com.unisagrado.Unisagrado.unieventos.model;
 
+import br.com.unisagrado.Unisagrado.unieventos.auth.model.Role;
+import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 import jakarta.persistence.*;
 
 @Entity

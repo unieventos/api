@@ -3,6 +3,7 @@ package br.com.unisagrado.Unisagrado.unieventos.model;
 import java.time.LocalDate;
 import java.util.Set;
 
+import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

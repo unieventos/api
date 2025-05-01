@@ -21,7 +21,7 @@
                          referencedTableName="usuario" referencedColumnNames="usuario_id" />
             </column>
             <column name="token" type="VARCHAR(255)" />
-            <column name="expire" type="TIMESTAMP" />
+            <column name="expire" type="DATETIME" />
             <column name="stay_logged" type="TINYINT(1)" defaultValue="0">
                 <constraints nullable="false"/>
             </column>

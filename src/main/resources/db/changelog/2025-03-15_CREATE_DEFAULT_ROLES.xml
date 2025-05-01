@@ -11,13 +11,16 @@
 
         <insert tableName="role">
             <column name="role_id" value="1"/>
-            <column name="name" value="USER"/>
+            <column name="name" value="ROLE_ADMIN"/>
         </insert>
         <insert tableName="role">
             <column name="role_id" value="2"/>
-            <column name="name" value="ADMIN"/>
+            <column name="name" value="ROLE_GESTOR"/>
         </insert>
-
+		<insert tableName="role">
+            <column name="role_id" value="3"/>
+            <column name="name" value="ROLE_COLABORADOR"/>
+        </insert>
 
     </changeSet>
 </databaseChangeLog>

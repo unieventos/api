@@ -8,10 +8,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import br.com.unisagrado.Unisagrado.config.security.JwtUtil;
-import br.com.unisagrado.Unisagrado.unieventos.model.Profile;
-import br.com.unisagrado.Unisagrado.unieventos.service.ProfileService;
+import br.com.unisagrado.Unisagrado.unieventos.auth.exception.AccessTokenNotFound;
+import br.com.unisagrado.Unisagrado.unieventos.auth.exception.TokenExpiredException;
+import br.com.unisagrado.Unisagrado.unieventos.auth.model.Profile;
+import br.com.unisagrado.Unisagrado.unieventos.auth.service.ProfileService;
+import br.com.unisagrado.Unisagrado.unieventos.auth.validator.ProfileValidator;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,11 +28,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private UserDetailsService userDetailsService;
 
 	private ProfileService profileService;
-	
-	public JwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService,ProfileService profileService) {
+
+	private HandlerExceptionResolver handlerExceptionResolver;
+
+	public JwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService,
+			ProfileService profileService, HandlerExceptionResolver handlerExceptionResolver) {
 		this.jwtUtil = jwtUtil;
 		this.userDetailsService = userDetailsService;
 		this.profileService = profileService;
+		this.handlerExceptionResolver = handlerExceptionResolver;
 	}
 
 	@Override
@@ -37,26 +45,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		final String authHeader = request.getHeader("Authorization");
 		String username = null;
 		String jwt = null;
+		Profile profile = null;
 
 		if (authHeader != null && authHeader.startsWith("Bearer ")) {
 			jwt = authHeader.substring(7);
-			username = jwtUtil.extractUsername(jwt);
+
+			try {
+				profile = profileService.findProfileByToken(jwt);
+				username = jwtUtil.extractUsername(profile.getToken());
+
+				ProfileValidator.profileExpired(profile);
+			} catch (AccessTokenNotFound ex) {
+				handlerExceptionResolver.resolveException(request, response, null, ex);
+				throw ex;
+			} catch (TokenExpiredException ex) {
+				profileService.revokeToken(profile.getToken());
+				handlerExceptionResolver.resolveException(request, response, null, ex);
+				throw ex;
+			}
+
 		}
 
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-			Profile profile = profileService.findProfileByToken(jwt);
-			
-			if(!profile.isStayLogged()) {
-				jwtUtil.isTokenExpired(profile.getToken());
-			}
-			
 			if (jwtUtil.validateToken(profile.getToken(), userDetails)) {
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
 						null, userDetails.getAuthorities());
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(authToken);
+				profileService.refreshProfile(profile);
 			}
 		}
 

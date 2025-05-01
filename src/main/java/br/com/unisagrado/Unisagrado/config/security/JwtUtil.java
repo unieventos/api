@@ -22,10 +22,6 @@ public class JwtUtil {
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.signWith(Keys.hmacShaKeyFor(SECRET_KEY.getBytes()), SignatureAlgorithm.HS256);
 
-		if (!stayLogged) {
-			tokenBuilder.setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10));
-		}
-
 		return tokenBuilder.compact();
 	}
 
@@ -38,9 +34,4 @@ public class JwtUtil {
 		return extractUsername(token).equals(userDetails.getUsername());
 	}
 
-	public boolean isTokenExpired(String token) {
-		Date expiration = Jwts.parserBuilder().setSigningKey(SECRET_KEY.getBytes()).build().parseClaimsJws(token)
-				.getBody().getExpiration();
-		return expiration.before(new Date());
-	}
 }

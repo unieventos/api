@@ -13,9 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import br.com.unisagrado.Unisagrado.config.filters.JwtAuthenticationFilter;
-import br.com.unisagrado.Unisagrado.unieventos.service.ProfileService;
+import br.com.unisagrado.Unisagrado.unieventos.auth.service.ProfileService;
 
 @Configuration
 @EnableWebSecurity
@@ -29,6 +30,9 @@ public class WebSecurityConfig {
 	
 	@Autowired
 	private ProfileService profileService;
+	
+	@Autowired
+	private HandlerExceptionResolver handlerExceptionResolver;
 
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -52,7 +56,7 @@ public class WebSecurityConfig {
 	
 	@Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-		JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userDetailsService, profileService);
+		JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userDetailsService, profileService,handlerExceptionResolver);
         return filter;
     }
 

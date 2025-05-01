@@ -2,6 +2,7 @@ package br.com.unisagrado.Unisagrado.unieventos.model;
 
 import java.util.List;
 
+import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -20,6 +21,7 @@ public class Curso {
     @Column(name = "curso_id")
     private Long id;
 
+    @Column(name = "nome", unique = true)
     private String nome;
     
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
