@@ -39,7 +39,7 @@ public class WebSecurityConfig {
 		http.csrf(AbstractHttpConfigurer::disable)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
-						auth -> auth.requestMatchers("/auth/**").permitAll().anyRequest().authenticated())
+						auth -> auth.requestMatchers("/auth/**","/usuarios/password").permitAll().anyRequest().authenticated())
 				.userDetailsService(userDetailsService)
 				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -1,7 +1,6 @@
 package br.com.unisagrado.Unisagrado.unieventos.auth.model;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

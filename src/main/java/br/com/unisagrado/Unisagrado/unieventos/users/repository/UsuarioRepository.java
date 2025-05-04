@@ -15,4 +15,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, String>{
 	
 	@Query(value = "SELECT id FROM Usuario where login = ?1")
 	Optional<String> findIdByLogin(String login);
+
+	Optional<Usuario> findByEmail(String email);
 }

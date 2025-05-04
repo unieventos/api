@@ -11,6 +11,7 @@ import br.com.unisagrado.Unisagrado.unieventos.auth.exception.AccessTokenNotFoun
 import br.com.unisagrado.Unisagrado.unieventos.auth.exception.TokenExpiredException;
 import br.com.unisagrado.Unisagrado.unieventos.courses.exception.CursoNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.IllegarUserIdException;
+import br.com.unisagrado.Unisagrado.unieventos.users.exception.SendEmailException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserNotFoundException;
 
 @RestControllerAdvice
@@ -39,6 +40,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CursoNotFoundException.class)
     public ResponseEntity<ErrorDTO> handleCursoNotFoundException(CursoNotFoundException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "course_not_found", "Curso não encontrado."));
+    }
+    
+    @ExceptionHandler(SendEmailException.class)
+    public ResponseEntity<ErrorDTO> handleSendEmailException(SendEmailException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), "send_email_error", "Não foi possível realizar o envio do email."));
     }
     
     @ExceptionHandler(NoHandlerFoundException.class)

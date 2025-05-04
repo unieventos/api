@@ -18,7 +18,7 @@ import br.com.unisagrado.Unisagrado.unieventos.users.repository.UsuarioRepositor
 import jakarta.transaction.Transactional;
 
 @Service
-public class UsuarioService {
+public class UserService {
 
 	@Autowired
 	public UsuarioRepository repository;
@@ -47,11 +47,16 @@ public class UsuarioService {
 		user.setEmail(createUserDto.email());
 		user.setRoles(new HashSet<Role>());
 		user.setSenha(passwordEncoder.encode(createUserDto.senha()));
-
+		user.setActive(true);
+		
 		repository.save(user);
 	}
 
 	public Usuario findUsuarioById(String uuid) {
 		return repository.findById(uuid).orElseThrow(UserNotFoundException::new);
+	}
+	
+	public Usuario findUsuarioByEmail(String email) {
+		return repository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 	}
 }

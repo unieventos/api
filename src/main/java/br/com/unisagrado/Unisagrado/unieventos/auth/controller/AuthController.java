@@ -5,12 +5,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.unisagrado.Unisagrado.config.security.CustomUserDetailsService;
 import br.com.unisagrado.Unisagrado.config.security.JwtUtil;
 import br.com.unisagrado.Unisagrado.unieventos.auth.dto.AuthRequest;
 import br.com.unisagrado.Unisagrado.unieventos.auth.dto.AuthResponse;
@@ -30,7 +30,7 @@ public class AuthController {
 	private JwtUtil jwtUtil;
 
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private CustomUserDetailsService userDetailsService;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {

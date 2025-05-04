@@ -11,17 +11,16 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-  
 
 server:
   port: ${UNI_PORT:8080}
   servlet:
     context-path: /unieventos
-#  error:
-#    include-message: never
-#    include-binding-errors: never
-#    include-stacktrace: never
-#    include-exception: false
+
+unieventos:
+  email:
+    apikey: ${EMAIL_API_KEY:}
+    apiurl: ${EMAIL_API_URL}
 
 management:
   endpoints:
