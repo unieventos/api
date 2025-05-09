@@ -12,9 +12,6 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
-      - name: Fazer checkout do código
-        uses: actions/checkout@v3
-
       - name: Configurar SSH
         uses: webfactory/ssh-agent@v0.8.0
         with:
