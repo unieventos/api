@@ -25,9 +25,8 @@ jobs:
       - name: Construir a imagem Docker
         id: build-image
         run: |
-          DOCKER_TAG=${{ github.sha }}
           docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${DOCKER_TAG} .
-          echo "::set-output name=image::${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:${DOCKER_TAG}"
+          echo "::set-output name=image::${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:2.00"
 
       - name: Enviar a imagem Docker
         if: steps.build-image.outputs.image
