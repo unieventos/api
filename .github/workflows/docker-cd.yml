@@ -1,15 +1,16 @@
 name: Docker CD
 
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: ["Docker CI"] # Nome do seu workflow de CI
+    types: [completed]
 
 jobs:
   deploy:
     name: Deploy na Máquina Remota
     runs-on: ubuntu-latest
-    needs: build-and-push
-    
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
     steps:
       - name: Fazer checkout do código
         uses: actions/checkout@v3
@@ -21,12 +22,12 @@ jobs:
 
       - name: Remover containers antigos
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo docker compose -f ${{ secrets.COMPOSE_FILE_PATH }} down"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker compose -f ${{ secrets.COMPOSE_FILE_PATH }} down"
 
       - name: Puxar a nova imagem Docker
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:2.00"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker pull ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:2.00"
 
       - name: Subir a nova aplicação
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo docker compose -f ${{ secrets.COMPOSE_FILE_PATH }} up -d"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker compose -f ${{ secrets.COMPOSE_FILE_PATH }} up -d"
