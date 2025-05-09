@@ -24,7 +24,7 @@ jobs:
 
       - name: Puxar a nova imagem Docker
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker pull ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:2.00"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:2.00"
 
       - name: Subir a nova aplicação
         run: |
