@@ -8,7 +8,6 @@ import br.com.unisagrado.Unisagrado.unieventos.model.Curso;
 import br.com.unisagrado.Unisagrado.unieventos.model.Evento;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -31,6 +30,10 @@ public class Usuario {
 	@JoinColumn(name = "curso_id")
 	private Curso curso;
 	
+	@ManyToOne
+	@JoinColumn(name = "role_id")
+	private Role role;
+	
 	@Column(nullable = false)
 	private String email;
 	
@@ -43,9 +46,8 @@ public class Usuario {
 	@Column(nullable = false)
 	private String sobrenome;
 	
-	
 	@Column(nullable = false, name = "is_active")
-	private boolean isActive;
+	private boolean active;
 	
 	@ManyToMany
 	@JoinTable(
@@ -54,19 +56,11 @@ public class Usuario {
 			  inverseJoinColumns = @JoinColumn(name = "evento_id"))
 	private Set<Evento> eventosPermissao;
 
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(
-			name = "usuario_role",
-			joinColumns = @JoinColumn(name = "usuario_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id")
-	)
-	private Set<Role> roles;
-
 	public Usuario() {
 		this.setId(UUID.randomUUID().toString());
 	}
 
-	public Usuario(String id, String login, Curso curso, String email, String senha, String nome, String sobrenome, boolean isActive, Set<Evento> eventosPermissao, Set<Role> roles) {
+	public Usuario(String id, String login, Curso curso, String email, String senha, String nome, String sobrenome, boolean active, Set<Evento> eventosPermissao, Role role) {
 		this.id = id;
 		this.login = login;
 		this.curso = curso;
@@ -74,9 +68,9 @@ public class Usuario {
 		this.senha = senha;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
-		this.isActive = isActive;
+		this.active = active;
 		this.eventosPermissao = eventosPermissao;
-		this.roles = roles;
+		this.role = role;
 	}
 
 	public Set<Evento> getEventosPermissao() {
@@ -127,20 +121,20 @@ public class Usuario {
 		this.nome = nome;
 	}
 
-	public boolean getActive() {
-		return isActive;
+	public boolean isActive() {
+		return active;
 	}
 
 	public void setActive(boolean active) {
-		isActive = active;
+		this.active = active;
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
+	public Role getRole() {
+		return role;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setRole(Role role) {
+		this.role = role;
 	}
 
 	public String getLogin() {

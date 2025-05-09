@@ -7,12 +7,12 @@ import br.com.unisagrado.Unisagrado.unieventos.users.dto.CreateUserRecord;
 import br.com.unisagrado.Unisagrado.unieventos.users.service.UserService;
 
 @Component
-public class CreateUserUseCase {
-
-	@Autowired
-	private UserService usuarioService;
+public class UpdateUserUseCase {
 	
-	public void execute(CreateUserRecord createUserRecord) {
-		usuarioService.createUser(createUserRecord);
+	@Autowired
+	private UserService userService;
+
+	public void execute(String userId, CreateUserRecord userRecord) {
+		userService.updateUser(userId, userRecord);
 	}
 }

@@ -2,6 +2,7 @@ package br.com.unisagrado.Unisagrado.config.security;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,14 +26,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         Usuario user = userRepository.findByLogin(login)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        List<GrantedAuthority> authorities = user.getRoles().stream()
+        List<GrantedAuthority> authorities = Stream.of(user.getRole())
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.getName()))
                 .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(
                 user.getLogin(),
                 user.getSenha(),
-                user.getActive(),
+                user.isActive(),
                 true, true, true,
                 authorities
         );

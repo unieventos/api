@@ -6,20 +6,20 @@
 
     <changeSet author="unieventos" id="1742064853122">
         <preConditions>
-            <tableExists tableName="usuario_role" />
+            <tableExists tableName="role" />
         </preConditions>
 
         <insert tableName="role">
             <column name="role_id" value="1"/>
-            <column name="name" value="ROLE_ADMIN"/>
+            <column name="name" value="ADMIN"/>
         </insert>
         <insert tableName="role">
             <column name="role_id" value="2"/>
-            <column name="name" value="ROLE_GESTOR"/>
+            <column name="name" value="GESTOR"/>
         </insert>
 		<insert tableName="role">
             <column name="role_id" value="3"/>
-            <column name="name" value="ROLE_COLABORADOR"/>
+            <column name="name" value="COLABORADOR"/>
         </insert>
 
     </changeSet>

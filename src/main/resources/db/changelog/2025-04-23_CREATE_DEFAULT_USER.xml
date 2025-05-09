@@ -22,6 +22,7 @@
 				value="$2a$12$Nxwve9XEDDiIiUHjeUi3UeMt0bHDmf5ipcZmnsMEbrRmIub.uxQfi" />
 			<column name="nome" value="Administrador" />
 			<column name="sobrenome" value="" />
+			<column name="role_id" value="1" />
 		</insert>
 
 	</changeSet>

@@ -1,21 +1,29 @@
 package br.com.unisagrado.Unisagrado.config.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import br.com.unisagrado.Unisagrado.unieventos.auth.exception.AccessTokenNotFound;
+import br.com.unisagrado.Unisagrado.unieventos.auth.exception.RoleNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.auth.exception.TokenExpiredException;
 import br.com.unisagrado.Unisagrado.unieventos.courses.exception.CursoNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.IllegarUserIdException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.SendEmailException;
+import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserAlreadyInactive;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+	
+	private Logger logger = LoggerFactory.getLogger(getClass());
     
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorDTO> handleUserNotFoundException(UserNotFoundException e) {
@@ -45,6 +53,32 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(SendEmailException.class)
     public ResponseEntity<ErrorDTO> handleSendEmailException(SendEmailException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), "send_email_error", "Não foi possível realizar o envio do email."));
+    }
+    
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDTO> handleException(Exception e) {
+    	logger.error(e.getMessage(), e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), "internal_server_error", "Erro inesperado."));
+    }
+    
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorDTO> handleBadCredentialsException(BadCredentialsException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "bad_credentials", "Usuário ou senha incorretos."));
+    }
+    
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleRoleNotFoundException(RoleNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "role_not_found", "Role informada não foi encontrada."));
+    }
+    
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorDTO> handleAccessDeniedException(AccessDeniedException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDTO(HttpStatus.FORBIDDEN.value(), "access_denied", "Você não tem permissão para acessar esse recurso."));
+    }
+    
+    @ExceptionHandler(UserAlreadyInactive.class)
+    public ResponseEntity<ErrorDTO> handleUserAlreadyInactive(UserAlreadyInactive e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "user_already_inactive", "Usuário já está inativo."));
     }
     
     @ExceptionHandler(NoHandlerFoundException.class)

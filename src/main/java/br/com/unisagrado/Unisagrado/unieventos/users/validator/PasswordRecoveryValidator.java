@@ -6,7 +6,7 @@ import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 public class PasswordRecoveryValidator {
 	
 	public static void validate(Usuario usuario) {
-		if(!usuario.getActive()) {
+		if(!usuario.isActive()) {
 			throw new UsuarioInativoException();
 		}
 	}

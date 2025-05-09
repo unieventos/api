@@ -21,7 +21,7 @@ unieventos:
   email:
     apikey: ${EMAIL_API_KEY:}
     apiurl: ${EMAIL_API_URL}
-
+    from: ${EMAIL_FROM}
 management:
   endpoints:
     web:

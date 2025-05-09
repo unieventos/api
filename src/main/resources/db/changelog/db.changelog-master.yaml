@@ -2,6 +2,8 @@ databaseChangeLog:
   - include:
       file: db/changelog/2025-03-15_CREATE_TABLE_COURSE.xml
   - include:
+      file: db/changelog/2025-03-15_CREATE_TABLE_ROLE.xml
+  - include:
       file: db/changelog/2025-02-27_CREATE_TABLE_USUARIO.xml
   - include:
       file: db/changelog/2025-02-27_CREATE_TABLE_EVENTO.xml
@@ -13,10 +15,6 @@ databaseChangeLog:
       file: db/changelog/2025-02-27_CREATE_TABLE_USUARIO_EVENTO_PERMISSAO.xml
   - include:
       file: db/changelog/2025-02-27_CREATE_TABLE_FOTO.xml
-  - include:
-      file: db/changelog/2025-03-15_CREATE_TABLE_ROLE.xml
-  - include:
-      file: db/changelog/2025-03-15_CREATE_TABLE_USUARIO_ROLE.xml
   - include:
       file: db/changelog/2025-03-15_CREATE_DEFAULT_ROLES.xml
   - include:

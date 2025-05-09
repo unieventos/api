@@ -19,6 +19,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-
+		<addUniqueConstraint columnNames="name"
+			tableName="role"></addUniqueConstraint>
     </changeSet>
 </databaseChangeLog>
