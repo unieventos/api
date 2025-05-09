@@ -21,7 +21,7 @@ jobs:
 
       - name: Remover containers antigos
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose -f ${{ secrets.COMPOSE_FILE_PATH }} down"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker compose -f ${{ secrets.COMPOSE_FILE_PATH }} down"
 
       - name: Puxar a nova imagem Docker
         run: |
@@ -29,4 +29,4 @@ jobs:
 
       - name: Subir a nova aplicação
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker-compose -f ${{ secrets.COMPOSE_FILE_PATH }} up -d"
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "docker compose -f ${{ secrets.COMPOSE_FILE_PATH }} up -d"
