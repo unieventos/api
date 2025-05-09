@@ -8,7 +8,8 @@ jobs:
   deploy:
     name: Deploy na Máquina Remota
     runs-on: ubuntu-latest
-
+    needs: build-and-test
+    
     steps:
       - name: Fazer checkout do código
         uses: actions/checkout@v3
