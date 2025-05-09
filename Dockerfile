@@ -8,6 +8,6 @@ RUN mvn clean package -DskipTests
 # Estágio final
 FROM openjdk:17-jdk-alpine
 WORKDIR /app
-COPY --from=build /app/target/Unisagrado-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/Unisagrado-2.00.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
