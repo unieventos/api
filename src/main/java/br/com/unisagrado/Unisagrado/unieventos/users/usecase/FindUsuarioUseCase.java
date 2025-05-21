@@ -1,6 +1,9 @@
 package br.com.unisagrado.Unisagrado.unieventos.users.usecase;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioDTOV1;
@@ -19,5 +22,9 @@ public class FindUsuarioUseCase {
 		ValidateUserId.validate(uuid);
 		Usuario usuarioById = service.findUsuarioById(uuid);
 		return UsuarioTranslator.translate(usuarioById);
+	}
+	
+	public List<UsuarioDTOV1> findAll(Pageable pageable){
+		return UsuarioTranslator.translate(service.findAll(pageable).toList());
 	}
 }

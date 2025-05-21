@@ -1,6 +1,13 @@
 package br.com.unisagrado.Unisagrado.unieventos.users.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,9 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.CreateUserRecord;
+import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioResource;
 import br.com.unisagrado.Unisagrado.unieventos.users.usecase.CreateUserUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.users.usecase.FindUsuarioUseCase;
@@ -39,6 +48,21 @@ public class UsuarioController {
 	
 	@Autowired
 	private InactivateUser inactivateUser;
+	
+	@GetMapping
+    public CollectionModel<UsuarioResource> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        List<UsuarioDTOV1> all = findUsuarioUseCase.findAll(pageable);
+        
+        List<UsuarioResource> list = all.stream().map(UsuarioResource::new).toList();
+        
+        return CollectionModel.of(list,WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAll(page, size, sortBy))
+                .withSelfRel());
+    }
 	
 	@Operation(summary = "Busca usuario por ID", description = "Retorna os dados completos da entidade correspondente ao ID.")
 	@ApiResponses(value = {

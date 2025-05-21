@@ -13,7 +13,7 @@ public class UsuarioTranslator {
 		return dtov1;
 	}
 	
-	public List<UsuarioDTOV1> translate(List<Usuario> usuario) {
+	public static List<UsuarioDTOV1> translate(List<Usuario> usuario) {
 		List<UsuarioDTOV1> dtos = new ArrayList<UsuarioDTOV1>();
 		dtos.addAll(usuario.stream().map(UsuarioTranslator::translate).toList());
 		
