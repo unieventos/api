@@ -101,4 +101,9 @@ public class UserService {
 	public Page<Usuario> findAllByFilter(Pageable pageable, String name){
 		return repository.findByNomeContainingIgnoreCase(name, pageable);
 	}
+	
+	
+	public Usuario findByLogin(String login) {
+		return repository.findByLogin(login).orElseThrow(UserNotFoundException::new);
+	}
 }

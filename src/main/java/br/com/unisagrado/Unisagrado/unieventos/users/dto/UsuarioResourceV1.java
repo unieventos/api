@@ -5,10 +5,10 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
 import br.com.unisagrado.Unisagrado.unieventos.users.controller.UsuarioController;
 
-public class UsuarioResource extends RepresentationModel<UsuarioResource> {
+public class UsuarioResourceV1 extends RepresentationModel<UsuarioResourceV1> {
 	private final UsuarioDTOV1 usuarioDTOV1;
 
-	public UsuarioResource(UsuarioDTOV1 usuarioDTOV1) {
+	public UsuarioResourceV1(UsuarioDTOV1 usuarioDTOV1) {
 		this.usuarioDTOV1 = usuarioDTOV1;
 
 		add(WebMvcLinkBuilder

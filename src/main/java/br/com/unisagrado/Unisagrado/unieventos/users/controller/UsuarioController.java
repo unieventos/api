@@ -24,7 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.CreateUserRecord;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioDTOV1;
-import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioResource;
+import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioResourceV1;
+import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioResourceV2;
 import br.com.unisagrado.Unisagrado.unieventos.users.usecase.CreateUserUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.users.usecase.FindUsuarioUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.users.usecase.InactivateUser;
@@ -52,7 +53,7 @@ public class UsuarioController {
 	
 	@GetMapping
 	@CrossOrigin
-    public CollectionModel<UsuarioResource> findAll(
+    public CollectionModel<UsuarioResourceV1> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -61,7 +62,7 @@ public class UsuarioController {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
         List<UsuarioDTOV1> all = findUsuarioUseCase.findAllByFilter(pageable, name);
         
-        List<UsuarioResource> list = all.stream().map(UsuarioResource::new).toList();
+        List<UsuarioResourceV1> list = all.stream().map(UsuarioResourceV1::new).toList();
         
         return CollectionModel.of(list,WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAll(page, size, sortBy, name))
                 .withSelfRel());
@@ -75,8 +76,14 @@ public class UsuarioController {
 	})
 	@CrossOrigin
 	@GetMapping("/{id}")
-	public ResponseEntity<UsuarioResource> findUsuarioById(@PathVariable String id){
-		return new ResponseEntity<UsuarioResource>(new UsuarioResource(findUsuarioUseCase.findById(id)),HttpStatus.OK);
+	public ResponseEntity<UsuarioResourceV1> findUsuarioById(@PathVariable String id){
+		return new ResponseEntity<UsuarioResourceV1>(new UsuarioResourceV1(findUsuarioUseCase.findById(id)),HttpStatus.OK);
+	}
+	
+	@CrossOrigin
+	@GetMapping("/me")
+	public ResponseEntity<UsuarioResourceV2> findPersonalData(){
+		return new ResponseEntity<UsuarioResourceV2>(new UsuarioResourceV2(findUsuarioUseCase.findPersonalData()),HttpStatus.OK);
 	}
 	
 	@Operation(summary = "Atualizar um usuário", description = "Atualizar um usuário existente.")
