@@ -15,7 +15,7 @@ public class UsuarioTranslator {
 	}
 	
 	public static UsuarioDTOV2 translateV2(Usuario usuario) {
-		UsuarioDTOV2 dtov2 = new UsuarioDTOV2(usuario.getId(), usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(), usuario.getCurso().getId(), usuario.getRole().getName());
+		UsuarioDTOV2 dtov2 = new UsuarioDTOV2(usuario.getId(), usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(), usuario.getCurso().getNome(), usuario.getRole().getName());
 		return dtov2;
 	}
 	
