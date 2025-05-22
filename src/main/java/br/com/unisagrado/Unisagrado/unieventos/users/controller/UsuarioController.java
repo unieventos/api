@@ -53,14 +53,15 @@ public class UsuarioController {
     public CollectionModel<UsuarioResource> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "", required = false) String name 
     ) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        List<UsuarioDTOV1> all = findUsuarioUseCase.findAll(pageable);
+        List<UsuarioDTOV1> all = findUsuarioUseCase.findAllByFilter(pageable, name);
         
         List<UsuarioResource> list = all.stream().map(UsuarioResource::new).toList();
         
-        return CollectionModel.of(list,WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAll(page, size, sortBy))
+        return CollectionModel.of(list,WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAll(page, size, sortBy, name))
                 .withSelfRel());
     }
 	

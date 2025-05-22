@@ -98,7 +98,7 @@ public class UserService {
 	}
 	
 	
-	public Page<Usuario> findAll(Pageable pageable){
-		return repository.findAll(pageable);
+	public Page<Usuario> findAllByFilter(Pageable pageable, String name){
+		return repository.findByNomeContainingIgnoreCase(name, pageable);
 	}
 }

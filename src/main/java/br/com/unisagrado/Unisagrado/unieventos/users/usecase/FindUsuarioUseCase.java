@@ -24,7 +24,7 @@ public class FindUsuarioUseCase {
 		return UsuarioTranslator.translate(usuarioById);
 	}
 	
-	public List<UsuarioDTOV1> findAll(Pageable pageable){
-		return UsuarioTranslator.translate(service.findAll(pageable).toList());
+	public List<UsuarioDTOV1> findAllByFilter(Pageable pageable, String name ){
+		return UsuarioTranslator.translate(service.findAllByFilter(pageable, name).toList());
 	}
 }
