@@ -35,7 +35,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 
 @RestController
-@CrossOrigin(originPatterns = "*")
 @RequestMapping("/usuarios")
 public class UsuarioController {
 	
@@ -52,6 +51,7 @@ public class UsuarioController {
 	private InactivateUser inactivateUser;
 	
 	@GetMapping
+	@CrossOrigin
     public CollectionModel<UsuarioResource> findAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -73,6 +73,7 @@ public class UsuarioController {
 	    @ApiResponse(responseCode = "404", description = "Usuario não encontrado"),
 	    @ApiResponse(responseCode = "400", description = "Id de usuário inválido")
 	})
+	@CrossOrigin
 	@GetMapping("/{id}")
 	public ResponseEntity<UsuarioResource> findUsuarioById(@PathVariable String id){
 		return new ResponseEntity<UsuarioResource>(new UsuarioResource(findUsuarioUseCase.findById(id)),HttpStatus.OK);
@@ -82,6 +83,7 @@ public class UsuarioController {
 	@ApiResponses(value = {
 	    @ApiResponse(responseCode = "204", description = "Usuario atualizado com sucesso")
 	})
+	@CrossOrigin
 	@PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
 	@PatchMapping("/{id}")
 	public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody CreateUserRecord body){
@@ -96,6 +98,7 @@ public class UsuarioController {
 	})
 	@PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
 	@PostMapping
+	@CrossOrigin
 	public ResponseEntity<?> createUser(@RequestBody @Valid CreateUserRecord createUserDTO){
 		createUserUseCase.execute(createUserDTO);
 		return new ResponseEntity<>(HttpStatus.CREATED);
@@ -107,6 +110,7 @@ public class UsuarioController {
 	})
 	@PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
 	@DeleteMapping("/{id}")
+	@CrossOrigin
 	public ResponseEntity<?> inactiveUser(@PathVariable String id){
 		inactivateUser.execute(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
