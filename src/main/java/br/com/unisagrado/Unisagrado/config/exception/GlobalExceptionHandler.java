@@ -28,8 +28,9 @@ import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserNotFoundExcep
 public class GlobalExceptionHandler {
 	
 	private Logger logger = LoggerFactory.getLogger(getClass());
-    
-    @ExceptionHandler(UserNotFoundException.class)
+	
+
+	@ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorDTO> handleUserNotFoundException(UserNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "user_not_found", "Usuário não encontrado."));
     }
