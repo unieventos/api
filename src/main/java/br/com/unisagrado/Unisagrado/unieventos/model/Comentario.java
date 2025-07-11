@@ -44,4 +44,8 @@ public class Comentario implements ContemFoto{
 		this.description = description;
 	}
 	
+	@Override
+	public String nome() {
+		return "Comentário";
+	}
 }

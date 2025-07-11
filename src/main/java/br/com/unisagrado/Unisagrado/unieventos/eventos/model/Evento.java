@@ -1,8 +1,10 @@
-package br.com.unisagrado.Unisagrado.unieventos.model;
+package br.com.unisagrado.Unisagrado.unieventos.eventos.model;
 
 import java.time.LocalDate;
 import java.util.Set;
 
+import br.com.unisagrado.Unisagrado.unieventos.categoria.model.Categoria;
+import br.com.unisagrado.Unisagrado.unieventos.model.ContemFoto;
 import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,11 +14,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "evento")
-public class Evento implements ContemFoto{
+public class Evento implements ContemFoto {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -34,27 +38,33 @@ public class Evento implements ContemFoto{
 	@Column(name = "data_fim", nullable = false)
 	private LocalDate dateFim;
 
-	@Column(name = "usuario_criador", nullable = false)
-	private String usuarioCriador;
+	@ManyToOne
+    @JoinColumn(name = "usuario_criador")
+	private Usuario usuarioCriador;
 
 	@ManyToMany
 	@JoinTable(name = "usuario_evento_permissao", joinColumns = @JoinColumn(name = "evento_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
 	private Set<Usuario> usuariosPermissao;
 
+	@ManyToMany
+	@JoinTable(name = "evento_categoria", joinColumns = @JoinColumn(name = "evento_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
+	private Set<Categoria> eventoCategoria;
+
 	public Evento() {
 	}
 
 	public Evento(String id, String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim,
-			String usuarioCriador) {
+			Usuario usuarioCriador, Set<Usuario> usuariosPermissao, Set<Categoria> eventoCategoria) {
 		this.id = id;
 		this.nomeEvento = nomeEvento;
 		this.descricao = descricao;
 		this.dateInicio = dateInicio;
 		this.dateFim = dateFim;
 		this.usuarioCriador = usuarioCriador;
+		this.usuariosPermissao = usuariosPermissao;
+		this.eventoCategoria = eventoCategoria;
 	}
 
-	
 	public String getId() {
 		return id;
 	}
@@ -95,11 +105,11 @@ public class Evento implements ContemFoto{
 		this.dateFim = dateFim;
 	}
 
-	public String getUsuarioCriador() {
+	public Usuario getUsuarioCriador() {
 		return usuarioCriador;
 	}
 
-	public void setUsuarioCriador(String usuarioCriador) {
+	public void setUsuarioCriador(Usuario usuarioCriador) {
 		this.usuarioCriador = usuarioCriador;
 	}
 
@@ -109,5 +119,18 @@ public class Evento implements ContemFoto{
 
 	public void setUsuariosPermissao(Set<Usuario> usuariosPermissao) {
 		this.usuariosPermissao = usuariosPermissao;
+	}
+
+	public Set<Categoria> getEventoCategoria() {
+		return eventoCategoria;
+	}
+
+	public void setEventoCategoria(Set<Categoria> eventoCategoria) {
+		this.eventoCategoria = eventoCategoria;
+	}
+
+	@Override
+	public String nome() {
+		return "Evento";
 	}
 }

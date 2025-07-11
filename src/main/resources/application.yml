@@ -22,6 +22,8 @@ unieventos:
     apikey: ${EMAIL_API_KEY:}
     apiurl: ${EMAIL_API_URL}
     from: ${EMAIL_FROM}
+  storage:
+    path: ${STORAGE_PATH:}
 management:
   endpoints:
     web:

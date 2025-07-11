@@ -14,7 +14,11 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.auth.exception.AccessTokenNotFound;
 import br.com.unisagrado.Unisagrado.unieventos.auth.exception.RoleNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.auth.exception.TokenExpiredException;
+import br.com.unisagrado.Unisagrado.unieventos.categoria.exceptions.CategoriaNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.courses.exception.CursoNotFoundException;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.exception.EventNotFoundException;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotoNotFoundException;
+import br.com.unisagrado.Unisagrado.unieventos.storage.exception.SaveFileException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.IllegarUserIdException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.SendEmailException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserAlreadyInactive;
@@ -79,6 +83,31 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAlreadyInactive.class)
     public ResponseEntity<ErrorDTO> handleUserAlreadyInactive(UserAlreadyInactive e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "user_already_inactive", "Usuário já está inativo."));
+    }
+    
+    @ExceptionHandler(CategoriaNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleCategoriaNotFoundException(CategoriaNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "categoria_not_found", "Não foi possível encontrar a categoria."));
+    }
+    
+    @ExceptionHandler(FotoNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleFotoNotFoundException(FotoNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "foto_not_found", "Não foi possível encontrar a foto."));
+    }
+    
+    @ExceptionHandler(EventNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleEventNotFound(EventNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "event_not_found", "Não foi possível encontrar o evento."));
+    }
+    
+    @ExceptionHandler(SaveFileException.class)
+    public ResponseEntity<ErrorDTO> handleSaveFileException(SaveFileException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), "file_error", "Não foi possível salvar o seu arquivo."));
+    }
+    
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorDTO> handleIllegalArgumentException(IllegalArgumentException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "bad_request", e.getMessage()));
     }
     
     @ExceptionHandler(NoHandlerFoundException.class)

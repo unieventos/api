@@ -1,5 +1,6 @@
 package br.com.unisagrado.Unisagrado.unieventos.model;
 
+import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;

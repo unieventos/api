@@ -1,4 +1,4 @@
-package br.com.unisagrado.Unisagrado.unieventos.model;
+package br.com.unisagrado.Unisagrado.unieventos.eventos.model;
 
 public class FotoEventoId {
 

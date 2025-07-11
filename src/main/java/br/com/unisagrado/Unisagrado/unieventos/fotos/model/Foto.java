@@ -1,4 +1,4 @@
-package br.com.unisagrado.Unisagrado.unieventos.model;
+package br.com.unisagrado.Unisagrado.unieventos.fotos.model;
 
 import java.util.UUID;
 
@@ -7,6 +7,9 @@ import org.hibernate.annotations.AnyDiscriminator;
 import org.hibernate.annotations.AnyDiscriminatorValue;
 import org.hibernate.annotations.AnyKeyJavaClass;
 
+import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
+import br.com.unisagrado.Unisagrado.unieventos.model.Comentario;
+import br.com.unisagrado.Unisagrado.unieventos.model.ContemFoto;
 import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorType;
 import jakarta.persistence.Entity;
@@ -29,7 +32,7 @@ public class Foto {
 	
 	@Any
 	@AnyDiscriminator(DiscriminatorType.STRING)
-	@AnyKeyJavaClass(Long.class)
+	@AnyKeyJavaClass(String.class)
 	@AnyDiscriminatorValue(discriminator = "EVENTO", entity = Evento.class)
 	@AnyDiscriminatorValue(discriminator = "COMENTARIO", entity = Comentario.class)
 	@Column(name = "detail_type")
@@ -38,6 +41,10 @@ public class Foto {
 	
 	public Foto(String id, String path, ContemFoto alvo) {
 		this.id = id;
+		this.path = path;
+		this.alvo = alvo;
+	}
+	public Foto(String path, ContemFoto alvo) {
 		this.path = path;
 		this.alvo = alvo;
 	}

@@ -4,8 +4,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import br.com.unisagrado.Unisagrado.unieventos.auth.model.Role;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import br.com.unisagrado.Unisagrado.unieventos.model.Curso;
-import br.com.unisagrado.Unisagrado.unieventos.model.Evento;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

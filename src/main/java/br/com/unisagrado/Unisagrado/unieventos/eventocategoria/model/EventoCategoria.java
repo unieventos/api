@@ -1,5 +1,7 @@
-package br.com.unisagrado.Unisagrado.unieventos.model;
+package br.com.unisagrado.Unisagrado.unieventos.eventocategoria.model;
 
+import br.com.unisagrado.Unisagrado.unieventos.categoria.model.Categoria;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -23,7 +25,6 @@ public class EventoCategoria {
     @MapsId("categoriaId")
     @JoinColumn(name = "categoria_id")
     private Categoria usuario;
-
     
 	public EventoCategoria(EventoCategoriaId id, Evento evento, Categoria usuario) {
 		this.id = id;
