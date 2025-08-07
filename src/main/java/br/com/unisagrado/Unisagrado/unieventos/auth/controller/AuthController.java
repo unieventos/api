@@ -34,7 +34,6 @@ public class AuthController {
 	private CustomUserDetailsService userDetailsService;
 
 	@PostMapping("/login")
-	@CrossOrigin
 	public ResponseEntity<?> login(@RequestBody AuthRequest authRequest) {
 		authManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authRequest.getLogin(), authRequest.getPassword()));
