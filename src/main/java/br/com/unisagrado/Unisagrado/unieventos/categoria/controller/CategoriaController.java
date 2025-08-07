@@ -44,7 +44,6 @@ public class CategoriaController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Categorias encontradas"),
 			@ApiResponse(responseCode = "404", description = "Categorias não encontradas"),
 			@ApiResponse(responseCode = "400", description = "Parametro categorias inválido") })
-	@CrossOrigin
 	public CollectionModel<CategoriaResourceV1> findAll(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "", required = false) String name) {
@@ -63,7 +62,6 @@ public class CategoriaController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Categorias encontradas"),
 			@ApiResponse(responseCode = "404", description = "Categorias não encontradas"),
 			@ApiResponse(responseCode = "400", description = "Parametro categorias inválido") })
-	@CrossOrigin
 	public ResponseEntity<CategoriaResourceV1> findById(@PathVariable String id) {
 		return new ResponseEntity<CategoriaResourceV1>(new CategoriaResourceV1(findCategoriaUseCase.findById(id)),HttpStatus.OK);
 
@@ -72,7 +70,6 @@ public class CategoriaController {
 	@PostMapping
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Categoria registrada com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Categoria evento inválido") })
-	@CrossOrigin
 	public ResponseEntity<?> register(@RequestBody @Valid CreateCategoriaRecord createEvent) {
 		createCategoriaUseCase.execute(createEvent);
 
