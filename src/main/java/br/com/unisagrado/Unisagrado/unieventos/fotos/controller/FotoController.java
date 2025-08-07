@@ -44,7 +44,6 @@ public class FotoController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Fotos encontradas"),
 			@ApiResponse(responseCode = "404", description = "Fotos não encontradas"),
 			@ApiResponse(responseCode = "400", description = "Foto evento inválido") })
-	@CrossOrigin
 	public CollectionModel<FotoResourceV1> findAll(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
@@ -60,7 +59,6 @@ public class FotoController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Evento encontrado"),
 			@ApiResponse(responseCode = "404", description = "Evento não encontrado"),
 			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
-	@CrossOrigin
 	public ResponseEntity<FotoResourceV1> findById(@PathVariable String id) {
 		return new ResponseEntity<FotoResourceV1>(new FotoResourceV1(findFotoUseCase.findById(id)), HttpStatus.OK);
 
@@ -69,7 +67,6 @@ public class FotoController {
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Evento registrado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
-	@CrossOrigin
 	public ResponseEntity<?> register(@RequestPart("foto") MultipartFile foto,
 			@RequestPart("dados") CreateFotoRecord createFoto) {
 		createFotoUseCase.execute(createFoto, foto);
