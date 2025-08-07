@@ -42,7 +42,6 @@ public class EventoController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Eventos encontrados"),
 			@ApiResponse(responseCode = "404", description = "Eventos não encontrados"),
 			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
-	@CrossOrigin
 	public CollectionModel<EventoResourceV1> findAll(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "", required = false) String name) {
@@ -61,7 +60,6 @@ public class EventoController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Evento encontrado"),
 			@ApiResponse(responseCode = "404", description = "Evento não encontrado"),
 			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
-	@CrossOrigin
 	public ResponseEntity<EventoResourceV1> findById(@PathVariable String id) {
 		return new ResponseEntity<EventoResourceV1>(new EventoResourceV1(findEventoUseCase.findById(id)),
 				HttpStatus.OK);
@@ -71,7 +69,6 @@ public class EventoController {
 	@PostMapping
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Evento registrado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
-	@CrossOrigin
 	public ResponseEntity<?> register(@RequestBody CreateEventRecord createEvent) {
 		createEventUseCase.execute(createEvent);
 
