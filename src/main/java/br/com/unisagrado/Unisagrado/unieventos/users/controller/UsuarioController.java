@@ -52,7 +52,6 @@ public class UsuarioController {
 	private InactivateUser inactivateUser;
 
 	@GetMapping
-	@CrossOrigin
 	public CollectionModel<UsuarioResourceV1> findAll(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "", required = false) String name) {
@@ -72,14 +71,12 @@ public class UsuarioController {
 			@ApiResponse(responseCode = "404", description = "Usuario não encontrado"),
 			@ApiResponse(responseCode = "400", description = "Id de usuário inválido") })
 	@GetMapping("/{id}")
-	@CrossOrigin
 	public ResponseEntity<UsuarioResourceV1> findUsuarioById(@PathVariable String id) {
 		return new ResponseEntity<UsuarioResourceV1>(new UsuarioResourceV1(findUsuarioUseCase.findById(id)),
 				HttpStatus.OK);
 	}
 
 	@GetMapping("/me")
-	@CrossOrigin
 	public ResponseEntity<UsuarioResourceV2> findPersonalData() {
 		return new ResponseEntity<UsuarioResourceV2>(new UsuarioResourceV2(findUsuarioUseCase.findPersonalData()),
 				HttpStatus.OK);
@@ -89,7 +86,6 @@ public class UsuarioController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Usuario atualizado com sucesso") })
 	@PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
 	@PatchMapping("/{id}")
-	@CrossOrigin
 	public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody CreateUserRecord body) {
 		updateUserUseCase.execute(id, body);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -100,7 +96,6 @@ public class UsuarioController {
 			@ApiResponse(responseCode = "400", description = "Parâmetros inválidos para criação do usuário") })
 	@PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
 	@PostMapping
-	@CrossOrigin
 	public ResponseEntity<?> createUser(@RequestBody @Valid CreateUserRecord createUserDTO) {
 		createUserUseCase.execute(createUserDTO);
 		return new ResponseEntity<>(HttpStatus.CREATED);
@@ -110,7 +105,6 @@ public class UsuarioController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Usuario inativado com sucesso"), })
 	@PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
 	@DeleteMapping("/{id}")
-	@CrossOrigin
 	public ResponseEntity<?> inactiveUser(@PathVariable String id) {
 		inactivateUser.execute(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
