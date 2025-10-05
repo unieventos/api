@@ -8,7 +8,11 @@ import br.com.unisagrado.Unisagrado.unieventos.courses.service.CourseService;
 public class DeleteCourseUseCase {
 
 	private CourseService courseService;
-	
+
+	public DeleteCourseUseCase(CourseService courseService) {
+		this.courseService = courseService;
+	}
+
 	public void execute(Long id) {
 		courseService.deleteById(id);
 	}

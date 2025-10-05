@@ -13,6 +13,11 @@ public class UpdateCourseUseCase {
 	private CourseService courseService;
 	private CourseTranslator courseTranslator;
 	
+	public UpdateCourseUseCase(CourseService courseService, CourseTranslator courseTranslator) {
+		this.courseService = courseService;
+		this.courseTranslator = courseTranslator;
+	}
+
 	public CourseDTOV1 execute(UpdateCourseRecord courseRecord) {
 		return courseTranslator.toDto(courseService.update(courseTranslator.toEntity(courseRecord)));
 	}

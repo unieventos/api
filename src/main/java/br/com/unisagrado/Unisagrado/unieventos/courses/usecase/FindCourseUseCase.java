@@ -16,6 +16,11 @@ public class FindCourseUseCase {
 	private CourseService courseService;
 	private CourseTranslator courseTranslator;
 	
+	public FindCourseUseCase(CourseService courseService, CourseTranslator courseTranslator) {
+		this.courseService = courseService;
+		this.courseTranslator = courseTranslator;
+	}
+
 	public List<CourseDTOV1> findAll(Pageable pageable){
 		List<Course> all = courseService.findAll(pageable);
 		return courseTranslator.toDTO(all);
