@@ -31,7 +31,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 @RestController
-@RequestMapping("/courses")
+@RequestMapping("/cursos")
 public class CourseController {
 
 	private CreateCourseUseCase createCourseUseCase;
@@ -92,7 +92,7 @@ public class CourseController {
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
-	@PatchMapping("/{id}")
+	@PatchMapping
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Course atualizado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Parametro coruse inválido") })
 	public ResponseEntity<?> update(@RequestBody UpdateCourseRecord updateCourseRecord) {
