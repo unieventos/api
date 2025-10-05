@@ -1,4 +1,4 @@
-package br.com.unisagrado.Unisagrado.unieventos.model;
+package br.com.unisagrado.Unisagrado.unieventos.courses.model;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "curso")
-public class Curso {
+public class Course {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +27,17 @@ public class Curso {
     @OneToMany(mappedBy = "curso", fetch = FetchType.LAZY)
     private List<Usuario> usuario;
 
-    public Curso() {
+    public Course(Long id, String nome) {
+    	this.id = id;
+    	this.nome = nome;
+    }
+    
+    public Course(String nome) {
+    	this.nome = nome;
     }
     
 
-	public Curso(Long id, String nome, List<Usuario> usuario) {
+	public Course(Long id, String nome, List<Usuario> usuario) {
 		this.id = id;
 		this.nome = nome;
 		this.usuario = usuario;

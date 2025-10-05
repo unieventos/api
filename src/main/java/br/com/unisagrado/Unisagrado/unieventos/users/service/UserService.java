@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.unisagrado.Unisagrado.unieventos.auth.model.Role;
 import br.com.unisagrado.Unisagrado.unieventos.auth.service.RoleService;
-import br.com.unisagrado.Unisagrado.unieventos.courses.service.CursoService;
-import br.com.unisagrado.Unisagrado.unieventos.model.Curso;
+import br.com.unisagrado.Unisagrado.unieventos.courses.model.Course;
+import br.com.unisagrado.Unisagrado.unieventos.courses.service.CourseService;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.CreateUserRecord;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserAlreadyInactive;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserNotFoundException;
@@ -31,7 +31,7 @@ public class UserService {
 	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	private CursoService cursoService;
+	private CourseService cursoService;
 
 	@Autowired
 	private RoleService roleService;
@@ -43,7 +43,7 @@ public class UserService {
 	@Transactional
 	public void createUser(CreateUserRecord createUserRecord) {
 		
-		Curso curso = cursoService.findCursoByName(createUserRecord.curso());
+		Course curso = cursoService.findCursoByName(createUserRecord.curso());
 		Role role = roleService.findRoleByNome(createUserRecord.role());
 
 		Usuario user = new Usuario();
@@ -71,7 +71,7 @@ public class UserService {
 	@Modifying
 	public void updateUser(String userId, CreateUserRecord createUserRecord) {
 		Usuario user = findUsuarioById(userId);
-		Curso curso = cursoService.findCursoByName(createUserRecord.curso());
+		Course curso = cursoService.findCursoByName(createUserRecord.curso());
 		Role role = roleService.findRoleByNome(createUserRecord.role());
 		
 		user.setLogin(createUserRecord.login());

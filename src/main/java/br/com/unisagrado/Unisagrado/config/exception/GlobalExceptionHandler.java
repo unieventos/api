@@ -15,6 +15,7 @@ import br.com.unisagrado.Unisagrado.unieventos.auth.exception.AccessTokenNotFoun
 import br.com.unisagrado.Unisagrado.unieventos.auth.exception.RoleNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.auth.exception.TokenExpiredException;
 import br.com.unisagrado.Unisagrado.unieventos.categoria.exceptions.CategoriaNotFoundException;
+import br.com.unisagrado.Unisagrado.unieventos.courses.exception.CourseAlreadyExists;
 import br.com.unisagrado.Unisagrado.unieventos.courses.exception.CursoNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.exception.EventNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotoNotFoundException;
@@ -109,6 +110,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorDTO> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "bad_request", e.getMessage()));
+    }
+    
+    @ExceptionHandler(CourseAlreadyExists.class)
+    public ResponseEntity<ErrorDTO> handleCourseAlreadyExists(CourseAlreadyExists e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "course_error", "O curso informado já existe."));
     }
     
     @ExceptionHandler(NoHandlerFoundException.class)

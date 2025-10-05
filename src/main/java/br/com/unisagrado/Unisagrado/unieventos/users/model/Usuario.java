@@ -4,8 +4,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import br.com.unisagrado.Unisagrado.unieventos.auth.model.Role;
+import br.com.unisagrado.Unisagrado.unieventos.courses.model.Course;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
-import br.com.unisagrado.Unisagrado.unieventos.model.Curso;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -28,7 +28,7 @@ public class Usuario {
 
 	@ManyToOne
 	@JoinColumn(name = "curso_id")
-	private Curso curso;
+	private Course curso;
 	
 	@ManyToOne
 	@JoinColumn(name = "role_id")
@@ -60,7 +60,7 @@ public class Usuario {
 		this.setId(UUID.randomUUID().toString());
 	}
 
-	public Usuario(String id, String login, Curso curso, String email, String senha, String nome, String sobrenome, boolean active, Set<Evento> eventosPermissao, Role role) {
+	public Usuario(String id, String login, Course curso, String email, String senha, String nome, String sobrenome, boolean active, Set<Evento> eventosPermissao, Role role) {
 		this.id = id;
 		this.login = login;
 		this.curso = curso;
@@ -89,11 +89,11 @@ public class Usuario {
 		this.id = id;
 	}
 
-	public Curso getCurso() {
+	public Course getCurso() {
 		return curso;
 	}
 
-	public void setCurso(Curso curso) {
+	public void setCurso(Course curso) {
 		this.curso = curso;
 	}
 
