@@ -36,6 +36,8 @@ public class Course {
     	this.nome = nome;
     }
     
+	public Course() {
+	}
 
 	public Course(Long id, String nome, List<Usuario> usuario) {
 		this.id = id;
