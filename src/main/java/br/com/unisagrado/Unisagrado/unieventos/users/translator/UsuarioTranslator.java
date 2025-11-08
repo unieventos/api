@@ -10,7 +10,7 @@ import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 public class UsuarioTranslator {
 
 	public static UsuarioDTOV1 translateV1(Usuario usuario) {
-		UsuarioDTOV1 dtov1 = new UsuarioDTOV1(usuario.getId(), usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(), usuario.getCurso().getId());
+		UsuarioDTOV1 dtov1 = new UsuarioDTOV1(usuario.getId(), usuario.getNome(), usuario.getSobrenome(), usuario.getEmail(), usuario.getCurso().getId(), usuario.isActive());
 		return dtov1;
 	}
 	
