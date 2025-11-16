@@ -157,12 +157,12 @@ public class Usuario {
 	}
 
 	public Usuario updateUser(UpdateUserRecord updateUserRecord, String senha, Course curso, Role role) {
-		this.setLogin(updateUserRecord.login());
+		this.setLogin(updateUserRecord.login().isBlank() ? this.getLogin() : updateUserRecord.login());
 		this.setCurso(curso);
-		this.setEmail(updateUserRecord.email());
+		this.setEmail(updateUserRecord.email().isBlank() ? this.getEmail() : updateUserRecord.email());
 		this.setSenha(senha);
-		this.setNome(updateUserRecord.nome());
-		this.setSobrenome(updateUserRecord.sobrenome());
+		this.setNome(updateUserRecord.nome().isBlank() ? this.getNome() : updateUserRecord.nome());
+		this.setSobrenome(updateUserRecord.sobrenome().isBlank() ? this.getSobrenome() : updateUserRecord.sobrenome());
 		this.setRole(role);
 		
 		return this;

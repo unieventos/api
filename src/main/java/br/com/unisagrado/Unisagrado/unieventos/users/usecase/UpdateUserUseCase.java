@@ -29,9 +29,9 @@ public class UpdateUserUseCase {
 
 	public void execute(String userId, UpdateUserRecord updateUserRecord) {
 		Usuario usuario = userService.findUsuarioById(userId);
-		Course curso = courseService.findCursoByName(updateUserRecord.curso());
-		Role role = roleService.findRoleByNome(updateUserRecord.role());
-		
-		userService.saveOrUpdateUser(usuario.updateUser(updateUserRecord, passwordEncoder.encode(updateUserRecord.senha()), curso,role));
+		Course curso = courseService.findCursoByName(updateUserRecord.curso().isBlank() ? usuario.getCurso().getNome() : updateUserRecord.curso());
+		Role role = roleService.findRoleByNome(updateUserRecord.role().isBlank() ? usuario.getRole().getName() : updateUserRecord.role());
+		String senha = updateUserRecord.senha().isBlank() ? usuario.getSenha() : passwordEncoder.encode(updateUserRecord.senha());
+		userService.saveOrUpdateUser(usuario.updateUser(updateUserRecord, senha, curso,role));
 	}
 }
