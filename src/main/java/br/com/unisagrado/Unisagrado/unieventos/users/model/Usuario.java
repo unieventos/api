@@ -3,9 +3,13 @@ package br.com.unisagrado.Unisagrado.unieventos.users.model;
 import java.util.Set;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import br.com.unisagrado.Unisagrado.unieventos.auth.model.Role;
 import br.com.unisagrado.Unisagrado.unieventos.courses.model.Course;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
+import br.com.unisagrado.Unisagrado.unieventos.users.dto.UpdateUserRecord;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -29,43 +33,44 @@ public class Usuario {
 	@ManyToOne
 	@JoinColumn(name = "curso_id")
 	private Course curso;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "role_id")
 	private Role role;
-	
+
 	@Column(nullable = false)
 	private String email;
-	
+
 	@Column(nullable = false)
 	private String senha;
-	
+
 	@Column(nullable = false)
 	private String nome;
 
 	@Column(nullable = false)
 	private String sobrenome;
-	
+
 	@Column(nullable = false, name = "is_active")
 	private boolean active;
-	
+
 	@ManyToMany
-	@JoinTable(
-			  name = "usuario_evento_permissao", 
-			  joinColumns = @JoinColumn(name = "usuario_id"), 
-			  inverseJoinColumns = @JoinColumn(name = "evento_id"))
+	@JoinTable(name = "usuario_evento_permissao", joinColumns = @JoinColumn(name = "usuario_id"), inverseJoinColumns = @JoinColumn(name = "evento_id"))
 	private Set<Evento> eventosPermissao;
 
 	public Usuario() {
 		this.setId(UUID.randomUUID().toString());
 	}
 
-	public Usuario(String id, String login, Course curso, String email, String senha, String nome, String sobrenome, boolean active, Set<Evento> eventosPermissao, Role role) {
+	private PasswordEncoder passwordEncoder;
+
+	public Usuario(String id, String login, Course curso, String email, String senha, String nome, String sobrenome,
+			boolean active, Set<Evento> eventosPermissao, Role role, PasswordEncoder passwordEncoder) {
+		this.passwordEncoder = passwordEncoder;
 		this.id = id;
 		this.login = login;
 		this.curso = curso;
 		this.email = email;
-		this.senha = senha;
+		this.senha = this.passwordEncoder.encode(senha);
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.active = active;
@@ -105,12 +110,12 @@ public class Usuario {
 		this.email = email;
 	}
 
-	public String getSenha() {
-		return senha;
-	}
-
 	public void setSenha(String senha) {
-		this.senha = senha;
+		this.senha = this.passwordEncoder.encode(senha);
+	}
+	
+	public String getSenha() {
+		return this.senha;
 	}
 
 	public String getNome() {
@@ -151,5 +156,17 @@ public class Usuario {
 
 	public void setSobrenome(String sobrenome) {
 		this.sobrenome = sobrenome;
+	}
+
+	public Usuario updateUser(UpdateUserRecord updateUserRecord, Course curso, Role role) {
+		this.setLogin(updateUserRecord.login());
+		this.setCurso(curso);
+		this.setEmail(updateUserRecord.email());
+		this.setSenha(updateUserRecord.senha());
+		this.setNome(updateUserRecord.nome());
+		this.setSobrenome(updateUserRecord.sobrenome());
+		this.setRole(role);
+		
+		return this;
 	}
 }

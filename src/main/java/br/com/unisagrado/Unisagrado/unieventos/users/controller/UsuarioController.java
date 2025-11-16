@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.CreateUserRecord;
+import br.com.unisagrado.Unisagrado.unieventos.users.dto.UpdateUserRecord;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioResourceV1;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioResourceV2;
@@ -85,7 +86,7 @@ public class UsuarioController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Usuario atualizado com sucesso") })
 	@PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
 	@PatchMapping("/{id}")
-	public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody CreateUserRecord body) {
+	public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody UpdateUserRecord body) {
 		updateUserUseCase.execute(id, body);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}

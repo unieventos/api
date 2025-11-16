@@ -15,6 +15,7 @@ import br.com.unisagrado.Unisagrado.unieventos.auth.service.RoleService;
 import br.com.unisagrado.Unisagrado.unieventos.courses.model.Course;
 import br.com.unisagrado.Unisagrado.unieventos.courses.service.CourseService;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.CreateUserRecord;
+import br.com.unisagrado.Unisagrado.unieventos.users.dto.UpdateUserRecord;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserAlreadyInactive;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
@@ -27,9 +28,6 @@ public class UserService {
 	@Autowired
 	private UsuarioRepository repository;
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
 	@Autowired
 	private CourseService cursoService;
 
@@ -54,7 +52,7 @@ public class UserService {
 		user.setCurso(curso);
 		user.setEmail(createUserRecord.email());
 		user.setRole(role);
-		user.setSenha(passwordEncoder.encode(createUserRecord.senha()));
+		user.setSenha(createUserRecord.senha());
 		user.setActive(true);
 		
 		repository.save(user);
@@ -69,20 +67,8 @@ public class UserService {
 	}
 	
 	@Modifying
-	public void updateUser(String userId, CreateUserRecord createUserRecord) {
-		Usuario user = findUsuarioById(userId);
-		Course curso = cursoService.findCursoByName(createUserRecord.curso());
-		Role role = roleService.findRoleByNome(createUserRecord.role());
-		
-		user.setLogin(createUserRecord.login());
-		user.setCurso(curso);
-		user.setNome(createUserRecord.nome());
-		user.setSobrenome(createUserRecord.sobrenome());
-		user.setEmail(createUserRecord.email());
-		user.setSenha(passwordEncoder.encode(createUserRecord.senha()));
-		user.setRole(role);
-		
-		repository.save(user);
+	public void saveOrUpdateUser(Usuario usuario) {
+		repository.save(usuario);
 	}
 	
 	@Modifying
