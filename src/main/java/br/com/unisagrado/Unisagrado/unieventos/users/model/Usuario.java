@@ -61,16 +61,14 @@ public class Usuario {
 		this.setId(UUID.randomUUID().toString());
 	}
 
-	private PasswordEncoder passwordEncoder;
 
 	public Usuario(String id, String login, Course curso, String email, String senha, String nome, String sobrenome,
 			boolean active, Set<Evento> eventosPermissao, Role role, PasswordEncoder passwordEncoder) {
-		this.passwordEncoder = passwordEncoder;
 		this.id = id;
 		this.login = login;
 		this.curso = curso;
 		this.email = email;
-		this.senha = this.passwordEncoder.encode(senha);
+		this.senha = senha;
 		this.nome = nome;
 		this.sobrenome = sobrenome;
 		this.active = active;
@@ -111,7 +109,7 @@ public class Usuario {
 	}
 
 	public void setSenha(String senha) {
-		this.senha = this.passwordEncoder.encode(senha);
+		this.senha = senha;
 	}
 	
 	public String getSenha() {
@@ -158,11 +156,11 @@ public class Usuario {
 		this.sobrenome = sobrenome;
 	}
 
-	public Usuario updateUser(UpdateUserRecord updateUserRecord, Course curso, Role role) {
+	public Usuario updateUser(UpdateUserRecord updateUserRecord, String senha, Course curso, Role role) {
 		this.setLogin(updateUserRecord.login());
 		this.setCurso(curso);
 		this.setEmail(updateUserRecord.email());
-		this.setSenha(updateUserRecord.senha());
+		this.setSenha(senha);
 		this.setNome(updateUserRecord.nome());
 		this.setSobrenome(updateUserRecord.sobrenome());
 		this.setRole(role);

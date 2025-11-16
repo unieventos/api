@@ -1,6 +1,7 @@
 package br.com.unisagrado.Unisagrado.unieventos.users.usecase;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import br.com.unisagrado.Unisagrado.unieventos.auth.model.Role;
@@ -22,11 +23,15 @@ public class UpdateUserUseCase {
 	
 	@Autowired
 	private RoleService roleService;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public void execute(String userId, UpdateUserRecord updateUserRecord) {
 		Usuario usuario = userService.findUsuarioById(userId);
 		Course curso = courseService.findCursoByName(updateUserRecord.curso());
 		Role role = roleService.findRoleByNome(updateUserRecord.role());
-		userService.saveOrUpdateUser(usuario.updateUser(updateUserRecord,curso,role));
+		
+		userService.saveOrUpdateUser(usuario.updateUser(updateUserRecord, passwordEncoder.encode(updateUserRecord.senha()), curso,role));
 	}
 }
