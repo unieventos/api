@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,6 +19,7 @@ import br.com.unisagrado.Unisagrado.unieventos.storage.properties.StoragePropert
 
 @Component
 public class StorageService {
+	private static final Logger logger = LoggerFactory.getLogger(StorageService.class);
 
 	private StorageProperties storageProperties;
 
@@ -39,21 +43,30 @@ public class StorageService {
 		if (!diretorioComPermissoesCorretas) {
 			throw new StorageErrorException();
 		}
-
 		String original = file.getOriginalFilename();
 		if (original == null) {
 			original = "";
 		}
 
-		String filename = UUID.randomUUID().toString() + "-" + original;
-		Path destino = dir.resolve(filename);
+		// substituir caracteres inválidos no nome original
+		String sanitized = original.replaceAll("[\\\\/:*?\"<>|]", "_");
+		String filename = UUID.randomUUID().toString() + "-" + sanitized;
+		Path destino = dir.resolve(filename).normalize();
+
+		// proteção contra path traversal
+		if (!destino.startsWith(dir)) {
+			logger.error("Tentativa de gravar fora do diretório permitido: {}", destino);
+			throw new SaveFileException(new SecurityException("Destino inválido"));
+		}
 
 		try {
-			file.transferTo(destino.toFile());
+			Files.copy(file.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
+			logger.error("Erro ao salvar arquivo em {}", destino, e);
 			throw new SaveFileException(e);
 		}
 
+		logger.info("Arquivo salvo em {}", destino.toAbsolutePath());
 		return destino.toAbsolutePath().toString();
 	}
 
