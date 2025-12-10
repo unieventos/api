@@ -1,5 +1,8 @@
 package br.com.unisagrado.Unisagrado.unieventos.eventos.usecase;
 
+import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.CreateFotoRecord;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.service.FotoService;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.usecase.CreateFotoUseCase;
 import org.springframework.stereotype.Component;
 
 import br.com.unisagrado.Unisagrado.unieventos.categoria.validator.CategoriaValidator;
@@ -17,16 +20,20 @@ public class CreateEventUseCase {
 
 	private EventoCategoriaService eventoCategoriaService;
 
+	private CreateFotoUseCase createFotoUseCase;
+
 	public CreateEventUseCase(EventoService eventoService, CategoriaValidator categoriaValidator,
-			EventoCategoriaService eventoCategoriaService) {
+			EventoCategoriaService eventoCategoriaService, CreateFotoUseCase createFotoUseCase) {
 		this.eventoService = eventoService;
 		this.categoriaValidator = categoriaValidator;
 		this.eventoCategoriaService = eventoCategoriaService;
+		this.createFotoUseCase = createFotoUseCase;
 	}
 
 	public void execute(CreateEventRecord createEvent) {
 		categoriaValidator.validateCategoriaExists(createEvent.categoria());
 		Evento evento = eventoService.createNewEvent(createEvent);
+		createFotoUseCase.execute(new CreateFotoRecord("Evento", evento.getId()), createEvent.foto());
 		eventoCategoriaService.createNewEventoCategoria(createEvent.categoria(), evento.getId());
 	}
 }
