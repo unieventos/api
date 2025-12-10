@@ -43,7 +43,7 @@ public class FotoService {
 	}
 
 	public void createNewFoto(CreateFotoRecord record, String newFilePath) {
-		Class<? extends ContemFoto> tipo = switch (record.tipo()) {
+		Class<? extends ContemFoto> tipo = switch (record.tipo().toUpperCase()) {
 	    case "EVENTO" -> Evento.class;
 	    case "COMENTARIO" -> Comentario.class;
 	    default -> throw new IllegalArgumentException("Tipo inválido: " + record.tipo());
