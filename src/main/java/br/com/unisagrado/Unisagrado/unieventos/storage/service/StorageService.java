@@ -1,7 +1,10 @@
+// language: java
 package br.com.unisagrado.Unisagrado.unieventos.storage.service;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -22,23 +25,36 @@ public class StorageService {
 
 	public String createNewFile(MultipartFile file) {
 
-		File filePath = new File(storageProperties.getPath());
+		Path dir = Paths.get(storageProperties.getPath());
 
-		boolean diretorioComPermissoesCorretas = filePath.exists() && filePath.canRead() && filePath.canWrite();
+		try {
+			if (!Files.exists(dir)) {
+				Files.createDirectories(dir);
+			}
+		} catch (IOException e) {
+			throw new StorageErrorException();
+		}
+
+		boolean diretorioComPermissoesCorretas = Files.isDirectory(dir) && Files.isReadable(dir) && Files.isWritable(dir);
 		if (!diretorioComPermissoesCorretas) {
 			throw new StorageErrorException();
 		}
-		
-		File destino = new File(filePath, UUID.randomUUID().toString().concat(file.getOriginalFilename()));
 
-	    try {
-	        file.transferTo(destino);
+		String original = file.getOriginalFilename();
+		if (original == null) {
+			original = "";
+		}
 
-	    } catch (IOException e) {
-	    	throw new SaveFileException(e);
-	    }
-	    
-	    return destino.getAbsolutePath();
+		String filename = UUID.randomUUID().toString() + "-" + original;
+		Path destino = dir.resolve(filename);
+
+		try {
+			file.transferTo(destino.toFile());
+		} catch (IOException e) {
+			throw new SaveFileException(e);
+		}
+
+		return destino.toAbsolutePath().toString();
 	}
 
 }
