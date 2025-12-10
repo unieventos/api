@@ -157,13 +157,14 @@ public class Usuario {
 	}
 
 	public Usuario updateUser(UpdateUserRecord updateUserRecord, String senha, Course curso, Role role) {
-		this.setLogin(updateUserRecord.login().isBlank() ? this.getLogin() : updateUserRecord.login());
-		this.setCurso(curso);
-		this.setEmail(updateUserRecord.email().isBlank() ? this.getEmail() : updateUserRecord.email());
-		this.setSenha(senha);
-		this.setNome(updateUserRecord.nome().isBlank() ? this.getNome() : updateUserRecord.nome());
-		this.setSobrenome(updateUserRecord.sobrenome().isBlank() ? this.getSobrenome() : updateUserRecord.sobrenome());
-		this.setRole(role);
+
+		this.setLogin(updateUserRecord.login() == null || updateUserRecord.login().isBlank() ? this.getLogin() : updateUserRecord.login());
+		this.setCurso(curso == null ? this.getCurso() : curso);
+		this.setEmail(updateUserRecord.email() == null || updateUserRecord.email().isBlank() ? this.getEmail() : updateUserRecord.email());
+		this.setSenha(senha == null || senha.isBlank() ? this.getSenha() : senha);
+		this.setNome(updateUserRecord.nome() == null || updateUserRecord.nome().isBlank() ? this.getNome() : updateUserRecord.nome());
+		this.setSobrenome(updateUserRecord.sobrenome() == null || updateUserRecord.sobrenome().isBlank() ? this.getSobrenome() : updateUserRecord.sobrenome());
+		this.setRole(role == null ? this.getRole() : role);
 		
 		return this;
 	}
