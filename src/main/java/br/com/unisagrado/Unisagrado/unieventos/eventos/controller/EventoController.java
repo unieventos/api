@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.CreateEventRecord;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoDTOV1;
@@ -70,8 +72,9 @@ public class EventoController {
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Evento registrado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
-	public ResponseEntity<?> register(@RequestBody CreateEventRecord createEvent) {
-		createEventUseCase.execute(createEvent);
+	public ResponseEntity<?> register(@RequestPart("dados") CreateEventRecord createEvent,
+			@RequestPart("foto") MultipartFile foto) {
+		createEventUseCase.execute(createEvent, foto);
 
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
