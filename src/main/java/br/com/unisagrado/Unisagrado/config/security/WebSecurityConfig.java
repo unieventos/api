@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -26,13 +27,13 @@ public class WebSecurityConfig {
 
 	@Autowired
 	private CustomUserDetailsService userDetailsService;
-	
+
 	@Autowired
 	private JwtUtil jwtUtil;
-	
+
 	@Autowired
 	private ProfileService profileService;
-	
+
 	@Autowired
 	private HandlerExceptionResolver handlerExceptionResolver;
 
@@ -41,8 +42,10 @@ public class WebSecurityConfig {
 		http.csrf(AbstractHttpConfigurer::disable)
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(
-						auth -> auth.requestMatchers("/auth/**","/swagger-ui/**","/v3/api-docs/**",
-					            "/swagger-ui.html").permitAll().anyRequest().authenticated())
+						auth -> auth.requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**",
+								"/swagger-ui.html").permitAll()
+								.requestMatchers(HttpMethod.GET, "/fotos/**").permitAll()
+								.anyRequest().authenticated())
 				.userDetailsService(userDetailsService)
 				.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -56,12 +59,13 @@ public class WebSecurityConfig {
 		provider.setPasswordEncoder(passwordEncoder());
 		return provider;
 	}
-	
+
 	@Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-		JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userDetailsService, profileService,handlerExceptionResolver);
-        return filter;
-    }
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userDetailsService, profileService,
+				handlerExceptionResolver);
+		return filter;
+	}
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
