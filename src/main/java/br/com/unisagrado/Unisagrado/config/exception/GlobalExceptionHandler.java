@@ -19,6 +19,7 @@ import br.com.unisagrado.Unisagrado.unieventos.courses.exception.CourseAlreadyEx
 import br.com.unisagrado.Unisagrado.unieventos.courses.exception.CursoNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.exception.EventNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotoNotFoundException;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.GenericException;
 import br.com.unisagrado.Unisagrado.unieventos.storage.exception.SaveFileException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.IllegarUserIdException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.SendEmailException;
@@ -115,6 +116,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CourseAlreadyExists.class)
     public ResponseEntity<ErrorDTO> handleCourseAlreadyExists(CourseAlreadyExists e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "course_error", "O curso informado já existe."));
+    }
+    
+    @ExceptionHandler(GenericException.class)
+    public ResponseEntity<ErrorDTO> handleGenericException(GenericException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "generic_exception", "Ocorreu uma falha no seu processamento."));
     }
     
     @ExceptionHandler(NoHandlerFoundException.class)

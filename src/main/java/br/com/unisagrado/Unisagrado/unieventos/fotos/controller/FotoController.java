@@ -2,6 +2,7 @@ package br.com.unisagrado.Unisagrado.unieventos.fotos.controller;
 
 import java.util.List;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -10,7 +11,6 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +24,7 @@ import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.CreateFotoRecord;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.FotoDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.FotoResourceV1;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.usecase.CreateFotoUseCase;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.usecase.DownloadFotoUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.usecase.FindFotoUseCase;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -34,6 +35,7 @@ public class FotoController {
 
 	private FindFotoUseCase findFotoUseCase;
 	private CreateFotoUseCase createFotoUseCase;
+	private DownloadFotoUseCase downloadFotoUseCase;
 
 	public FotoController(FindFotoUseCase findFotoUseCase, CreateFotoUseCase createFotoUseCase) {
 		this.findFotoUseCase = findFotoUseCase;
@@ -62,6 +64,14 @@ public class FotoController {
 	public ResponseEntity<FotoResourceV1> findById(@PathVariable String id) {
 		return new ResponseEntity<FotoResourceV1>(new FotoResourceV1(findFotoUseCase.findById(id)), HttpStatus.OK);
 
+	}
+	
+	@GetMapping( value = "/{id}/download", produces = MediaType.IMAGE_JPEG_VALUE)
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Foto encontrada"),
+			@ApiResponse(responseCode = "404", description = "Foto não encontrada"),
+			@ApiResponse(responseCode = "400", description = "Foto inválida") })
+	public ResponseEntity<Resource> downloadFoto(@PathVariable String id) {
+		return new ResponseEntity<Resource>(downloadFotoUseCase.execute(id), HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
