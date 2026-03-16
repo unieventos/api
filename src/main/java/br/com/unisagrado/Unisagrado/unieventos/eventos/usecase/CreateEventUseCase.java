@@ -32,10 +32,10 @@ public class CreateEventUseCase {
 		this.createFotoUseCase = createFotoUseCase;
 	}
 
-	public void execute(CreateEventRecord createEvent, List<MultipartFile> foto) {
+	public void execute(CreateEventRecord createEvent, List<MultipartFile> fotos) {
 		categoriaValidator.validateCategoriaExists(createEvent.categorias());
 		Evento evento = eventoService.createNewEvent(createEvent);
-		createFotoUseCase.execute(new CreateFotoRecord("Evento", evento.getId()), foto);
+		createFotoUseCase.execute(new CreateFotoRecord("Evento", evento.getId()), fotos);
 		eventoCategoriaService.createNewEventoCategoria(createEvent.categorias(), evento.getId());
 	}
 }

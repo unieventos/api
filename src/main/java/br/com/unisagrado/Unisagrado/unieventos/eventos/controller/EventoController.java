@@ -1,6 +1,8 @@
 package br.com.unisagrado.Unisagrado.unieventos.eventos.controller;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -71,8 +73,8 @@ public class EventoController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Evento registrado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
 	public ResponseEntity<?> register(@RequestPart("dados") CreateEventRecord createEvent,
-			@RequestPart(name = "foto", required = false) List<MultipartFile> foto) {
-		createEventUseCase.execute(createEvent, foto);
+			@RequestPart(name = "fotos", required = false) Optional<List<MultipartFile>> fotos) {
+		createEventUseCase.execute(createEvent, fotos.orElse(Collections.emptyList()));
 
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
