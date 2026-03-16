@@ -10,11 +10,9 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -73,7 +71,7 @@ public class EventoController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Evento registrado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
 	public ResponseEntity<?> register(@RequestPart("dados") CreateEventRecord createEvent,
-			@RequestPart("foto") MultipartFile foto) {
+			@RequestPart(name = "foto", required = false) List<MultipartFile> foto) {
 		createEventUseCase.execute(createEvent, foto);
 
 		return new ResponseEntity<>(HttpStatus.CREATED);

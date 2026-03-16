@@ -1,5 +1,7 @@
 package br.com.unisagrado.Unisagrado.unieventos.categoria.validator;
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 
 import br.com.unisagrado.Unisagrado.unieventos.categoria.service.CategoriaService;
@@ -17,4 +19,7 @@ public class CategoriaValidator {
 		categoriaService.findById(idCategoria);
 	}
 	
+	public void validateCategoriaExists(List<String> categorias) {
+		categorias.stream().forEach(this::validateCategoriaExists);
+	}
 }

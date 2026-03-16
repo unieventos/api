@@ -1,5 +1,7 @@
 package br.com.unisagrado.Unisagrado.unieventos.eventocategoria.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import br.com.unisagrado.Unisagrado.unieventos.categoria.model.Categoria;
@@ -28,5 +30,9 @@ public class EventoCategoriaService {
 		Evento evento = eventoService.findById(idEvento);
 		Categoria categoria = categoriaService.findById(idCategoria);
 		eventoCategoriaRepository.save(new EventoCategoria(new EventoCategoriaId(idCategoria, idEvento),evento, categoria));
+	}
+	
+	public void createNewEventoCategoria(List<String> categorias, String idEvento) {
+		categorias.forEach((categoria) -> this.createNewEventoCategoria(categoria, idEvento));;
 	}
 }

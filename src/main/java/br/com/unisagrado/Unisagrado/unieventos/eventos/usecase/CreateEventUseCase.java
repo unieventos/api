@@ -1,8 +1,7 @@
 package br.com.unisagrado.Unisagrado.unieventos.eventos.usecase;
 
-import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.CreateFotoRecord;
-import br.com.unisagrado.Unisagrado.unieventos.fotos.service.FotoService;
-import br.com.unisagrado.Unisagrado.unieventos.fotos.usecase.CreateFotoUseCase;
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +10,8 @@ import br.com.unisagrado.Unisagrado.unieventos.eventocategoria.service.EventoCat
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.CreateEventRecord;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.service.EventoService;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.CreateFotoRecord;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.usecase.CreateFotoUseCase;
 
 @Component
 public class CreateEventUseCase {
@@ -31,10 +32,10 @@ public class CreateEventUseCase {
 		this.createFotoUseCase = createFotoUseCase;
 	}
 
-	public void execute(CreateEventRecord createEvent, MultipartFile foto) {
-		categoriaValidator.validateCategoriaExists(createEvent.categoria());
+	public void execute(CreateEventRecord createEvent, List<MultipartFile> foto) {
+		categoriaValidator.validateCategoriaExists(createEvent.categorias());
 		Evento evento = eventoService.createNewEvent(createEvent);
 		createFotoUseCase.execute(new CreateFotoRecord("Evento", evento.getId()), foto);
-		eventoCategoriaService.createNewEventoCategoria(createEvent.categoria(), evento.getId());
+		eventoCategoriaService.createNewEventoCategoria(createEvent.categorias(), evento.getId());
 	}
 }
