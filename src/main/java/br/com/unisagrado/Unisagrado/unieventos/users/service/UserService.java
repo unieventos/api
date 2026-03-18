@@ -1,6 +1,7 @@
 package br.com.unisagrado.Unisagrado.unieventos.users.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,10 @@ public class UserService {
 	
 	
 	public Page<Usuario> findAllByFilter(Pageable pageable, FindUserFilter filter){
+		if(Objects.isNull(filter)) {
+			return repository.findAll(pageable);
+		}
+		
 		Usuario usu = new Usuario(filter.name(), filter.active());
 		ExampleMatcher matcher = ExampleMatcher.matching()
 	            .withIgnoreNullValues()
