@@ -55,7 +55,7 @@ public class UsuarioController {
 	@GetMapping
 	public CollectionModel<UsuarioResourceV1> findAll(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy,
-			@RequestParam(defaultValue = "", required = false) FindUserFilter findUserFilter) {
+			@RequestParam(required = false) FindUserFilter findUserFilter) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
 		List<UsuarioDTOV1> all = findUsuarioUseCase.findAllByFilter(pageable, findUserFilter);
 
