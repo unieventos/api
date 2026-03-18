@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.CreateUserRecord;
+import br.com.unisagrado.Unisagrado.unieventos.users.dto.FindUserFilter;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UpdateUserRecord;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioResourceV1;
@@ -54,15 +55,15 @@ public class UsuarioController {
 	@GetMapping
 	public CollectionModel<UsuarioResourceV1> findAll(@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "id") String sortBy,
-			@RequestParam(defaultValue = "", required = false) String name) {
+			@RequestParam(defaultValue = "", required = false) FindUserFilter findUserFilter) {
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-		List<UsuarioDTOV1> all = findUsuarioUseCase.findAllByFilter(pageable, name);
+		List<UsuarioDTOV1> all = findUsuarioUseCase.findAllByFilter(pageable, findUserFilter);
 
 		List<UsuarioResourceV1> list = all.stream().map(UsuarioResourceV1::new).toList();
 
 		return CollectionModel.of(list,
 				WebMvcLinkBuilder
-						.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAll(page, size, sortBy, name))
+						.linkTo(WebMvcLinkBuilder.methodOn(UsuarioController.class).findAll(page, size, sortBy, findUserFilter))
 						.withSelfRel());
 	}
 

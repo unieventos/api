@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,6 +17,7 @@ import br.com.unisagrado.Unisagrado.unieventos.auth.service.RoleService;
 import br.com.unisagrado.Unisagrado.unieventos.courses.model.Course;
 import br.com.unisagrado.Unisagrado.unieventos.courses.service.CourseService;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.CreateUserRecord;
+import br.com.unisagrado.Unisagrado.unieventos.users.dto.FindUserFilter;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserAlreadyInactive;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
@@ -87,8 +90,15 @@ public class UserService {
 	}
 	
 	
-	public Page<Usuario> findAllByFilter(Pageable pageable, String name){
-		return repository.findByNomeContainingIgnoreCase(name, pageable);
+	public Page<Usuario> findAllByFilter(Pageable pageable, FindUserFilter filter){
+		Usuario usu = new Usuario(filter.name(), filter.active());
+		ExampleMatcher matcher = ExampleMatcher.matching()
+	            .withIgnoreNullValues()
+	            .withIgnoreCase()
+	            .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+	    Example<Usuario> exemplo = Example.of(usu, matcher);
+	    return repository.findAll(exemplo,pageable);
 	}
 	
 	

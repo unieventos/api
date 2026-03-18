@@ -60,6 +60,11 @@ public class Usuario {
 	public Usuario() {
 		this.setId(UUID.randomUUID().toString());
 	}
+	
+	public Usuario(String name, boolean active) {
+		this.nome=name;
+		this.active=active;
+	}
 
 
 	public Usuario(String id, String login, Course curso, String email, String senha, String nome, String sobrenome,

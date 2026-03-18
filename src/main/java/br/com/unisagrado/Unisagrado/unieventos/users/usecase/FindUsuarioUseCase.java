@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
+import br.com.unisagrado.Unisagrado.unieventos.users.dto.FindUserFilter;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioDTOV2;
 import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
@@ -32,7 +33,7 @@ public class FindUsuarioUseCase {
 		return UsuarioTranslator.translateV2(service.findByLogin(authentication.getName()));
 	}	
 	
-	public List<UsuarioDTOV1> findAllByFilter(Pageable pageable, String name ){
-		return UsuarioTranslator.translateV1(service.findAllByFilter(pageable, name).toList());
+	public List<UsuarioDTOV1> findAllByFilter(Pageable pageable, FindUserFilter filter ){
+		return UsuarioTranslator.translateV1(service.findAllByFilter(pageable, filter).toList());
 	}
 }
