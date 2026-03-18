@@ -31,7 +31,7 @@ public class FindUserFilter {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Boolean getActive() {
+	public Boolean isActive() {
 		return active;
 	}
 	public void setActive(Boolean active) {

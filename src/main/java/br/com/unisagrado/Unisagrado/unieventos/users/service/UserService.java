@@ -96,7 +96,7 @@ public class UserService {
 			return repository.findAll(pageable);
 		}
 		
-		Usuario usu = new Usuario(filter.name(), filter.active());
+		Usuario usu = new Usuario(filter.getName(), filter.isActive());
 		ExampleMatcher matcher = ExampleMatcher.matching()
 	            .withIgnoreNullValues()
 	            .withIgnoreCase()
