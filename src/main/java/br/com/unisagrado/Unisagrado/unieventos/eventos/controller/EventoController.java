@@ -29,6 +29,8 @@ import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoResourceV1;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.CreateEventUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.FindEventoUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.FindFotosEventoUseCase;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.FotoDTOV1;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.DownloadFotoEvento;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
@@ -38,11 +40,14 @@ public class EventoController {
 
 	private FindEventoUseCase findEventoUseCase;
 	private CreateEventUseCase createEventUseCase;
+	private DownloadFotoEvento downloadFotoEvento;
 	private FindFotosEventoUseCase findFotosEventoUseCase;
 
-	public EventoController(FindEventoUseCase findEventoUseCase, CreateEventUseCase createEventUseCase, FindFotosEventoUseCase findFotosEventoUseCase) {
+	public EventoController(FindEventoUseCase findEventoUseCase, CreateEventUseCase createEventUseCase,
+			DownloadFotoEvento downloadFotoEvento, FindFotosEventoUseCase findFotosEventoUseCase) {
 		this.findEventoUseCase = findEventoUseCase;
 		this.createEventUseCase = createEventUseCase;
+		this.downloadFotoEvento = downloadFotoEvento;
 		this.findFotosEventoUseCase = findFotosEventoUseCase;
 	}
 
@@ -73,19 +78,30 @@ public class EventoController {
 				HttpStatus.OK);
 
 	}
-	
+
 	@GetMapping("/{id}/fotos")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Fotos encontradas"),
 			@ApiResponse(responseCode = "404", description = "Fotos não encontradas"),
 			@ApiResponse(responseCode = "400", description = "Evento id inválido") })
-	public ResponseEntity<Resource> findFotos(@PathVariable String id) {
-		Resource resource = findFotosEventoUseCase.execute(id);
+	public CollectionModel<FotoDTOV1> findFotos(@PathVariable String id) {
+		List<FotoDTOV1> resource = findFotosEventoUseCase.execute(id);
+
+		return CollectionModel.of(resource,
+				WebMvcLinkBuilder
+						.linkTo(WebMvcLinkBuilder.methodOn(EventoController.class).findFotos(id))
+						.withSelfRel());
+	}
+
+	@GetMapping("/{id}/fotos/download")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Fotos encontradas"),
+			@ApiResponse(responseCode = "404", description = "Fotos não encontradas"),
+			@ApiResponse(responseCode = "400", description = "Evento id inválido") })
+	public ResponseEntity<Resource> downloadFoto(@PathVariable String id) {
+		Resource resource = downloadFotoEvento.execute(id);
 		String contentType = "image/jpeg";
 
-	    return ResponseEntity.ok()
-	            .contentType(MediaType.parseMediaType(contentType))
-	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"foto_evento.jpg\"")
-	            .body(resource);
+		return ResponseEntity.ok().contentType(MediaType.parseMediaType(contentType))
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"foto_evento.jpg\"").body(resource);
 
 	}
 
