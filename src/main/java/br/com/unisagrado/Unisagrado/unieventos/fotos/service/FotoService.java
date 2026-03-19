@@ -1,11 +1,14 @@
 package br.com.unisagrado.Unisagrado.unieventos.fotos.service;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
@@ -83,20 +86,14 @@ public class FotoService {
 		return entityManager.createQuery(query).getResultList();
 	}
 	
-	public List<Resource> downloadFotosByEventoId(String eventoId){
-		List<Foto> fotos = findFotosByEventoId(eventoId);
-		
-		List<Resource> resources = new ArrayList<Resource>();
-		fotos.forEach((f) -> {
-	        Path path = Paths.get(f.getPath());
-	    	try {
-	    		resources.add(new UrlResource(path.toUri()));
-			} catch (MalformedURLException e) {
-				throw new GenericException(e);
-			}
-		}); 
-		
-		return resources;
+	public Resource downloadFoto(Foto foto){
+        Path path = Paths.get(foto.getPath());
+    	try {
+    		byte[] bytesDaFoto = Files.readAllBytes(path);
+            return new ByteArrayResource(bytesDaFoto);
+		} catch (IOException e) {
+			throw new GenericException(e);
+		}
 	}
 
 }

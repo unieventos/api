@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -77,8 +78,14 @@ public class EventoController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Fotos encontradas"),
 			@ApiResponse(responseCode = "404", description = "Fotos não encontradas"),
 			@ApiResponse(responseCode = "400", description = "Evento id inválido") })
-	public ResponseEntity<List<Resource>> findFotos(@PathVariable String id) {
-		return new ResponseEntity<List<Resource>>(findFotosEventoUseCase.execute(id),HttpStatus.OK);
+	public ResponseEntity<Resource> findFotos(@PathVariable String id) {
+		Resource resource = findFotosEventoUseCase.execute(id);
+		String contentType = "image/jpeg";
+
+	    return ResponseEntity.ok()
+	            .contentType(MediaType.parseMediaType(contentType))
+	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"foto_evento.jpg\"")
+	            .body(resource);
 
 	}
 

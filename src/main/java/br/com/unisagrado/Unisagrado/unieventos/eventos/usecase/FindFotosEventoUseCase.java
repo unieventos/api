@@ -2,6 +2,8 @@ package br.com.unisagrado.Unisagrado.unieventos.eventos.usecase;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
@@ -15,14 +17,16 @@ public class FindFotosEventoUseCase {
 
 	private EventoService eventoService;
 	private FotoService fotoService;
+	private static final Logger logger = LoggerFactory.getLogger(FotoService.class);
 	
 	public FindFotosEventoUseCase(EventoService eventoService, FotoService fotoService) {
 		this.eventoService = eventoService;
 		this.fotoService = fotoService;
 	}
 	
-	public List<Resource> execute(String eventoId) {
+	public Resource execute(String eventoId) {
 		Evento evento = eventoService.findById(eventoId);
-		return fotoService.downloadFotosByEventoId(evento.getId());
+		List<Foto> fotosByEventoId = fotoService.findFotosByEventoId(evento.getId());
+		return fotoService.downloadFoto(fotosByEventoId.get(0));
 	}
 }
