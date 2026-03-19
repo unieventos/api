@@ -1,11 +1,12 @@
 package br.com.unisagrado.Unisagrado.unieventos.fotos.usecase;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import br.com.unisagrado.Unisagrado.unieventos.fotos.service.FotoService;
 public class DownloadFotoUseCase {
 
 	private FotoService fotoService;
+	private static final Logger logger = LoggerFactory.getLogger(FotoService.class);
 
 	public DownloadFotoUseCase(FotoService fotoService) {
 		this.fotoService = fotoService;
@@ -32,6 +34,7 @@ public class DownloadFotoUseCase {
     		byte[] bytesDaFoto = Files.readAllBytes(path);
             return new ByteArrayResource(bytesDaFoto);
 		} catch (IOException e) {
+			logger.error(e.getMessage(),e);
 			throw new GenericException(e);
 		}
 	}
