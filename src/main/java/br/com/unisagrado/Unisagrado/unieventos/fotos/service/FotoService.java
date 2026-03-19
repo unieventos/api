@@ -1,7 +1,6 @@
 package br.com.unisagrado.Unisagrado.unieventos.fotos.service;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,11 +18,11 @@ import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.CreateFotoRecord;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotoNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.GenericException;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.model.Foto;
-import br.com.unisagrado.Unisagrado.unieventos.fotos.model.FotoTypeEnum;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.repository.FotoRepository;
 import br.com.unisagrado.Unisagrado.unieventos.model.Comentario;
 import br.com.unisagrado.Unisagrado.unieventos.model.ContemFoto;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -71,20 +69,19 @@ public class FotoService {
 		fotoRepository.save(new Foto(newFilePath, alvo));
 	}
 	
-	public List<Foto> findFotosByEventoId(String eventoId){
-		
+	public Foto findFotosByEventoId(String eventoId){
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Foto> query = builder.createQuery(Foto.class);
 		Root<Foto> from = query.from(Foto.class);
-		Evento eventoReference = entityManager.getReference(Evento.class, eventoId);
-		
 		List<Predicate> predicates = new ArrayList<>();
 		
-		predicates.add(builder.equal(from.get("alvo"), eventoReference));
 		predicates.add(builder.equal(from.get("id"), eventoId));
 
 		query.where(builder.and(predicates.toArray(new Predicate[0])));
-		return entityManager.createQuery(query).getResultList();
+		
+		TypedQuery<Foto> typedQuery = entityManager.createQuery(query);
+	    typedQuery.setMaxResults(0);
+	    return typedQuery.getSingleResult();
 	}
 	
 	public Resource downloadFoto(Foto foto){
