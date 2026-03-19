@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -72,7 +73,14 @@ public class FotoController {
 			@ApiResponse(responseCode = "404", description = "Foto não encontrada"),
 			@ApiResponse(responseCode = "400", description = "Foto inválida") })
 	public ResponseEntity<Resource> downloadFoto(@PathVariable String id) {
-		return new ResponseEntity<Resource>(downloadFotoUseCase.execute(id), HttpStatus.OK);
+		Resource resource = downloadFotoUseCase.execute(id);
+		String contentType = "application/octet-stream";
+
+	    return ResponseEntity.ok()
+	            .contentType(MediaType.parseMediaType(contentType))
+	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + id + "\"")
+	            .body(resource);
+	    
 	}
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

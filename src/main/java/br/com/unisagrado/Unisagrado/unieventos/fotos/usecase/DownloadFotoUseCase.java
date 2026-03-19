@@ -1,11 +1,13 @@
 package br.com.unisagrado.Unisagrado.unieventos.fotos.usecase;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.GenericException;
@@ -27,9 +29,9 @@ public class DownloadFotoUseCase {
 		
         Path path = Paths.get(foto.getPath());
     	try {
-			Resource resource = new UrlResource(path.toUri());
-			return resource;
-		} catch (MalformedURLException e) {
+    		byte[] bytesDaFoto = Files.readAllBytes(path);
+            return new ByteArrayResource(bytesDaFoto);
+		} catch (IOException e) {
 			throw new GenericException(e);
 		}
 	}
