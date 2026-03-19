@@ -37,9 +37,10 @@ public class FotoController {
 	private CreateFotoUseCase createFotoUseCase;
 	private DownloadFotoUseCase downloadFotoUseCase;
 
-	public FotoController(FindFotoUseCase findFotoUseCase, CreateFotoUseCase createFotoUseCase) {
+	public FotoController(FindFotoUseCase findFotoUseCase, CreateFotoUseCase createFotoUseCase, DownloadFotoUseCase downloadFotoUseCase) {
 		this.findFotoUseCase = findFotoUseCase;
 		this.createFotoUseCase = createFotoUseCase;
+		this.downloadFotoUseCase = downloadFotoUseCase;
 	}
 
 	@GetMapping
