@@ -58,9 +58,9 @@ public class FotoController {
 	}
 
 	@GetMapping("/{id}")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Evento encontrado"),
-			@ApiResponse(responseCode = "404", description = "Evento não encontrado"),
-			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Foto encontrado"),
+			@ApiResponse(responseCode = "404", description = "Foto não encontrado"),
+			@ApiResponse(responseCode = "400", description = "Fotos evento inválido") })
 	public ResponseEntity<FotoResourceV1> findById(@PathVariable String id) {
 		return new ResponseEntity<FotoResourceV1>(new FotoResourceV1(findFotoUseCase.findById(id)), HttpStatus.OK);
 

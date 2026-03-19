@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -26,6 +27,7 @@ import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoResourceV1;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.CreateEventUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.FindEventoUseCase;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.FindFotosEventoUseCase;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
@@ -35,10 +37,12 @@ public class EventoController {
 
 	private FindEventoUseCase findEventoUseCase;
 	private CreateEventUseCase createEventUseCase;
+	private FindFotosEventoUseCase findFotosEventoUseCase;
 
-	public EventoController(FindEventoUseCase findEventoUseCase, CreateEventUseCase createEventUseCase) {
+	public EventoController(FindEventoUseCase findEventoUseCase, CreateEventUseCase createEventUseCase, FindFotosEventoUseCase findFotosEventoUseCase) {
 		this.findEventoUseCase = findEventoUseCase;
 		this.createEventUseCase = createEventUseCase;
+		this.findFotosEventoUseCase = findFotosEventoUseCase;
 	}
 
 	@GetMapping
@@ -66,6 +70,15 @@ public class EventoController {
 	public ResponseEntity<EventoResourceV1> findById(@PathVariable String id) {
 		return new ResponseEntity<EventoResourceV1>(new EventoResourceV1(findEventoUseCase.findById(id)),
 				HttpStatus.OK);
+
+	}
+	
+	@GetMapping("/{id}/fotos")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Fotos encontradas"),
+			@ApiResponse(responseCode = "404", description = "Fotos não encontradas"),
+			@ApiResponse(responseCode = "400", description = "Evento id inválido") })
+	public ResponseEntity<List<Resource>> findFotos(@PathVariable String id) {
+		return new ResponseEntity<List<Resource>>(findFotosEventoUseCase.execute(id),HttpStatus.OK);
 
 	}
 

@@ -86,7 +86,7 @@ public class CourseController {
 	@DeleteMapping("/{id}")
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Course removido com sucesso"),
 			@ApiResponse(responseCode = "400", description = "ID para course inválido") })
-	public ResponseEntity<?> register(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) {
 		deleteCourseUseCase.execute(id);
 
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
