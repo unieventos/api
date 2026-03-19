@@ -76,10 +76,11 @@ public class FotoService {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Foto> query = builder.createQuery(Foto.class);
 		Root<Foto> from = query.from(Foto.class);
+		Evento eventoReference = entityManager.getReference(Evento.class, eventoId);
 		
 		List<Predicate> predicates = new ArrayList<>();
 		
-		predicates.add(builder.equal(from.get("alvo"), FotoTypeEnum.EVENTO.toString()));
+		predicates.add(builder.equal(from.get("alvo"), eventoReference));
 		predicates.add(builder.equal(from.get("id"), eventoId));
 
 		query.where(builder.and(predicates.toArray(new Predicate[0])));
