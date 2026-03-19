@@ -74,11 +74,11 @@ public class FotoController {
 			@ApiResponse(responseCode = "400", description = "Foto inválida") })
 	public ResponseEntity<Resource> downloadFoto(@PathVariable String id) {
 		Resource resource = downloadFotoUseCase.execute(id);
-		String contentType = "application/octet-stream";
+		String contentType = "image/jpeg";
 
 	    return ResponseEntity.ok()
 	            .contentType(MediaType.parseMediaType(contentType))
-	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + id + "\"")
+	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"foto_evento.jpg\"")
 	            .body(resource);
 	    
 	}

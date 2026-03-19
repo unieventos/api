@@ -48,12 +48,10 @@ public class StorageService {
 			original = "";
 		}
 
-		// substituir caracteres inválidos no nome original
 		String sanitized = original.replaceAll("[\\\\/:*?\"<>|]", "_");
 		String filename = UUID.randomUUID().toString() + "-" + sanitized;
 		Path destino = dir.resolve(filename).normalize();
 
-		// proteção contra path traversal
 		if (!destino.startsWith(dir)) {
 			logger.error("Tentativa de gravar fora do diretório permitido: {}", destino);
 			throw new SaveFileException(new SecurityException("Destino inválido"));
