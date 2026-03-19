@@ -17,7 +17,6 @@ public class DownloadFotoEvento {
 
 	private EventoService eventoService;
 	private FotoService fotoService;
-	private static final Logger logger = LoggerFactory.getLogger(FotoService.class);
 	
 	public DownloadFotoEvento(EventoService eventoService, FotoService fotoService) {
 		this.eventoService = eventoService;
@@ -26,8 +25,7 @@ public class DownloadFotoEvento {
 	
 	public Resource execute(String eventoId) {
 		Evento evento = eventoService.findById(eventoId);
-		Foto fotoByEventoId = fotoService.findFotosByEventoId(evento.getId());
-		
+		Foto fotoByEventoId = fotoService.findFirstFotoByTargetId(evento.getId());
 		return fotoService.downloadFoto(fotoByEventoId);
 	}
 }

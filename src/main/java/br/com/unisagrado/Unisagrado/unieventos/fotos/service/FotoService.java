@@ -16,13 +16,13 @@ import org.springframework.stereotype.Service;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.CreateFotoRecord;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotoNotFoundException;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotosForTargetIdNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.GenericException;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.model.Foto;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.repository.FotoRepository;
 import br.com.unisagrado.Unisagrado.unieventos.model.Comentario;
 import br.com.unisagrado.Unisagrado.unieventos.model.ContemFoto;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -69,19 +69,23 @@ public class FotoService {
 		fotoRepository.save(new Foto(newFilePath, alvo));
 	}
 	
-	public Foto findFotosByEventoId(String eventoId){
+	public List<Foto> findFotosByTargetId(String targetId){
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Foto> query = builder.createQuery(Foto.class);
 		Root<Foto> from = query.from(Foto.class);
+		
 		List<Predicate> predicates = new ArrayList<>();
 		
-		predicates.add(builder.equal(from.get("id"), eventoId));
+		predicates.add(builder.equal(from.get("id"), targetId));
 
 		query.where(builder.and(predicates.toArray(new Predicate[0])));
-		
-		TypedQuery<Foto> typedQuery = entityManager.createQuery(query);
-	    typedQuery.setMaxResults(0);
-	    return typedQuery.getSingleResult();
+		return entityManager.createQuery(query).getResultList();
+	}
+	
+	public Foto findFirstFotoByTargetId(String targetId){
+		List<Foto> fotosByTargetId = findFotosByTargetId(targetId);
+		if(fotosByTargetId.isEmpty()) throw new FotosForTargetIdNotFoundException(targetId);
+		return fotosByTargetId.get(0);
 	}
 	
 	public Resource downloadFoto(Foto foto){

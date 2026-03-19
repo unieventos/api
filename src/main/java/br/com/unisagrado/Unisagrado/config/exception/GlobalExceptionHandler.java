@@ -19,6 +19,7 @@ import br.com.unisagrado.Unisagrado.unieventos.courses.exception.CourseAlreadyEx
 import br.com.unisagrado.Unisagrado.unieventos.courses.exception.CursoNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.exception.EventNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotoNotFoundException;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotosForTargetIdNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.GenericException;
 import br.com.unisagrado.Unisagrado.unieventos.storage.exception.SaveFileException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.IllegarUserIdException;
@@ -120,7 +121,12 @@ public class GlobalExceptionHandler {
     
     @ExceptionHandler(GenericException.class)
     public ResponseEntity<ErrorDTO> handleGenericException(GenericException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "generic_exception", "Ocorreu uma falha no seu processamento."));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "generic_exception", e.getMessage()));
+    }
+    
+    @ExceptionHandler(FotosForTargetIdNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleFotosForTargetIdNotFoundException(FotosForTargetIdNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "fotos_not_found", e.getMessage()));
     }
     
     @ExceptionHandler(NoHandlerFoundException.class)

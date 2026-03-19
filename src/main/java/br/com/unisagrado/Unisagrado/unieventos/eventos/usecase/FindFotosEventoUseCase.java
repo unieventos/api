@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.service.EventoService;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.FotoDTOV1;
-import br.com.unisagrado.Unisagrado.unieventos.fotos.model.Foto;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.service.FotoService;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.translator.FotoTranslator;
 
@@ -28,6 +27,6 @@ public class FindFotosEventoUseCase {
 	
 	public List<FotoDTOV1> execute(String eventoId) {
 		Evento evento = eventoService.findById(eventoId);
-		return FotoTranslator.toDto(fotoService.findFotosByEventoId(evento.getId()));
+		return FotoTranslator.toDto(fotoService.findFotosByTargetId(evento.getId()));
 	}
 }
