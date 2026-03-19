@@ -69,22 +69,34 @@ public class FotoService {
 		fotoRepository.save(new Foto(newFilePath, alvo));
 	}
 	
-	public List<Foto> findFotosByTargetId(String targetId){
+	private <T> List<Foto> findFotosByTargetId(String targetId, Class<T> type){
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Foto> query = builder.createQuery(Foto.class);
 		Root<Foto> from = query.from(Foto.class);
 		
+		T reference = entityManager.getReference(type, targetId);
+
 		List<Predicate> predicates = new ArrayList<>();
 		
-		predicates.add(builder.equal(from.get("id"), targetId));
+		predicates.add(builder.equal(from.get("alvo"), reference));
 
-		query.where(builder.and(predicates.toArray(new Predicate[0])));
+		query.where(builder.or(predicates.toArray(new Predicate[0])));
 		return entityManager.createQuery(query).getResultList();
 	}
 	
-	public Foto findFirstFotoByTargetId(String targetId){
-		List<Foto> fotosByTargetId = findFotosByTargetId(targetId);
-		if(fotosByTargetId.isEmpty()) throw new FotosForTargetIdNotFoundException(targetId);
+	
+	public List<Foto> findFotosByEventoId(String targetId){
+		return findFotosByTargetId(targetId, Evento.class);
+	}
+	
+	public List<Foto> findFotosByComentarioId(String targetId){
+		return findFotosByTargetId(targetId, Comentario.class);
+
+	}
+	
+	public Foto findFirstFotoByEventoId(String eventoId){
+		List<Foto> fotosByTargetId = findFotosByEventoId(eventoId);
+		if(fotosByTargetId.isEmpty()) throw new FotosForTargetIdNotFoundException(eventoId);
 		return fotosByTargetId.get(0);
 	}
 	

@@ -25,7 +25,7 @@ public class DownloadFotoEvento {
 	
 	public Resource execute(String eventoId) {
 		Evento evento = eventoService.findById(eventoId);
-		Foto fotoByEventoId = fotoService.findFirstFotoByTargetId(evento.getId());
+		Foto fotoByEventoId = fotoService.findFirstFotoByEventoId(evento.getId());
 		return fotoService.downloadFoto(fotoByEventoId);
 	}
 }

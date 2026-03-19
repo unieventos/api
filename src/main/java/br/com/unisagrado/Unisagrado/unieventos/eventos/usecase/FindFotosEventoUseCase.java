@@ -27,6 +27,6 @@ public class FindFotosEventoUseCase {
 	
 	public List<FotoDTOV1> execute(String eventoId) {
 		Evento evento = eventoService.findById(eventoId);
-		return FotoTranslator.toDto(fotoService.findFotosByTargetId(evento.getId()));
+		return FotoTranslator.toDto(fotoService.findFotosByEventoId(evento.getId()));
 	}
 }
