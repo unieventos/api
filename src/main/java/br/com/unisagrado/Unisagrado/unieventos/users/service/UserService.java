@@ -36,18 +36,17 @@ public class UserService {
 
 	@Autowired
 	private RoleService roleService;
-	
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	public List<Usuario> findUsuarios() {
 		return repository.findAll();
 	}
-	
+
 	@Transactional
 	public void createUser(CreateUserRecord createUserRecord) {
-		
+
 		Course curso = cursoService.findCursoByName(createUserRecord.curso());
 		Role role = roleService.findRoleByNome(createUserRecord.role());
 
@@ -61,53 +60,60 @@ public class UserService {
 		user.setRole(role);
 		user.setSenha(passwordEncoder.encode(createUserRecord.senha()));
 		user.setActive(true);
-		
+
 		repository.save(user);
 	}
 
 	public Usuario findUsuarioById(String uuid) {
 		return repository.findById(uuid).orElseThrow(UserNotFoundException::new);
 	}
-	
+
 	public Usuario findUsuarioByEmail(String email) {
 		return repository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 	}
-	
+
 	@Modifying
 	public void saveOrUpdateUser(Usuario usuario) {
 		repository.save(usuario);
 	}
-	
+
 	@Modifying
 	public void inactivateUser(String userId) {
 		Usuario user = findUsuarioById(userId);
-		
-		if(!user.isActive()) {
+
+		if (!user.isActive()) {
 			throw new UserAlreadyInactive();
 		}
-		
+
 		user.setActive(false);
 		repository.save(user);
 	}
-	
-	
-	public Page<Usuario> findAllByFilter(Pageable pageable, FindUserFilter filter){
-		if(Objects.isNull(filter)) {
+
+	public Page<Usuario> findAllByFilter(Pageable pageable, FindUserFilter filter) {
+		if (Objects.isNull(filter)) {
 			return repository.findAll(pageable);
 		}
-		
-		Usuario usu = new Usuario(filter.getName(), filter.isActive());
-		ExampleMatcher matcher = ExampleMatcher.matching()
-	            .withIgnoreNullValues()
-	            .withIgnoreCase()
-	            .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
 
-	    Example<Usuario> exemplo = Example.of(usu, matcher);
-	    return repository.findAll(exemplo,pageable);
+		Usuario usu = new Usuario(filter.getName(), filter.isActive());
+		ExampleMatcher matcher = ExampleMatcher.matching().withIgnoreNullValues().withIgnoreCase()
+				.withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
+
+		Example<Usuario> exemplo = Example.of(usu, matcher);
+		return repository.findAll(exemplo, pageable);
 	}
-	
-	
+
 	public Usuario findByLogin(String login) {
 		return repository.findByLogin(login).orElseThrow(UserNotFoundException::new);
+	}
+
+	public void activeUser(String userId) {
+		Usuario user = findUsuarioById(userId);
+
+		if (user.isActive()) {
+			throw new UserAlreadyInactive();
+		}
+
+		user.setActive(true);
+		repository.save(user);
 	}
 }

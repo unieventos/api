@@ -27,6 +27,8 @@ import br.com.unisagrado.Unisagrado.unieventos.users.dto.UpdateUserRecord;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioResourceV1;
 import br.com.unisagrado.Unisagrado.unieventos.users.dto.UsuarioResourceV2;
+import br.com.unisagrado.Unisagrado.unieventos.users.exception.InvalidOperation;
+import br.com.unisagrado.Unisagrado.unieventos.users.usecase.ActiveUserUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.users.usecase.CreateUserUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.users.usecase.FindUsuarioUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.users.usecase.InactivateUser;
@@ -51,6 +53,9 @@ public class UsuarioController {
 
 	@Autowired
 	private InactivateUser inactivateUser;
+	
+	@Autowired
+	private ActiveUserUseCase activeUserUseCase;
 
 	@GetMapping
 	public CollectionModel<UsuarioResourceV1> findAll(@RequestParam(defaultValue = "0") int page,
@@ -108,6 +113,16 @@ public class UsuarioController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> inactiveUser(@PathVariable String id) {
 		inactivateUser.execute(id);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@Operation(summary = "Ativar um usuário", description = "Ativar um usuário na plataforma.")
+	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Usuario ativado com sucesso"), })
+	@PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
+	@PostMapping(value =  "/{id}")
+	public ResponseEntity<?> activeUser(@PathVariable String id, @RequestParam String action) {
+		if(!"active".equals(action)) throw new InvalidOperation(action);
+		activeUserUseCase.execute(id);
 		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 

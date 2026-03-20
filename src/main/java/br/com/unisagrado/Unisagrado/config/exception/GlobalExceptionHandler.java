@@ -23,6 +23,7 @@ import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotosForTargetIdN
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.GenericException;
 import br.com.unisagrado.Unisagrado.unieventos.storage.exception.SaveFileException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.IllegarUserIdException;
+import br.com.unisagrado.Unisagrado.unieventos.users.exception.InvalidOperation;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.SendEmailException;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserAlreadyInactive;
 import br.com.unisagrado.Unisagrado.unieventos.users.exception.UserNotFoundException;
@@ -127,6 +128,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FotosForTargetIdNotFoundException.class)
     public ResponseEntity<ErrorDTO> handleFotosForTargetIdNotFoundException(FotosForTargetIdNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO(HttpStatus.NOT_FOUND.value(), "fotos_not_found", e.getMessage()));
+    }
+    
+    @ExceptionHandler(InvalidOperation.class)
+    public ResponseEntity<ErrorDTO> handleInvalidOperation(InvalidOperation e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO(HttpStatus.BAD_REQUEST.value(), "invalid_operation", e.getMessage()));
     }
     
     @ExceptionHandler(NoHandlerFoundException.class)
