@@ -35,7 +35,7 @@ public class RelatorioEventoService {
 				.append(".content-text { margin-bottom: 8px; line-height: 1.5; } ")
 				.append(".bold { font-weight: bold; } ")
 				.append(".grid-fotos { display: block; width: 100%; margin-top: 15px; text-align: center; } ")
-				.append(".foto { width: 90%; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 5px; } ")
+				.append(".foto { width: 60%; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 5px; } ")
 				.append(".footer { margin-top: 20px; background-color: #f3f4f6; padding: 10px; text-align: center; font-size: 12px; color: #4b5563; } ")
 				.append("</style></head><body>");
 
