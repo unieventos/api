@@ -22,24 +22,9 @@ import br.com.unisagrado.Unisagrado.unieventos.fotos.service.FotoService;
 public class RelatorioEventoService {
 	private static final Logger logger = LoggerFactory.getLogger(FotoService.class);
 
-	private String carregarSvgComoImagem() {
-		try {
-			ClassPathResource resource = new ClassPathResource("static/images/logo.svg");
-			byte[] bytes = resource.getInputStream().readAllBytes();
-			String base64 = Base64.getEncoder().encodeToString(bytes);
-
-			logger.info(base64);
-			return "<img src='data:image/svg+xml;base64," + base64 + "' style='width: 30px; height: auto;' />";
-		} catch (Exception e) {
-			logger.error("Erro ao converter SVG para Base64: " + e.getMessage());
-			return "";
-		}
-	}
-
 	public byte[] gerarRelatorioEventos(List<EventoRelatorioDTO> eventos) {
 		ByteArrayOutputStream target = new ByteArrayOutputStream();
 		StringBuilder htmlBuilder = new StringBuilder();
-		String iconSvg = carregarSvgComoImagem();
 
 		htmlBuilder.append("<html><head><meta charset='UTF-8'><style>").append(
 				"body { font-family: sans-serif; background-color: #f9fafb; color: #1f2937; margin: 0; padding: 20px; } ")
@@ -50,15 +35,14 @@ public class RelatorioEventoService {
 				.append(".content-text { margin-bottom: 8px; line-height: 1.5; } ")
 				.append(".bold { font-weight: bold; } ")
 				.append(".grid-fotos { display: block; width: 100%; margin-top: 15px; text-align: center; } ")
-				.append(".foto { width: 30%; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 5px; } ")
+				.append(".foto { width: 50%; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin: 5px; } ")
 				.append(".footer { margin-top: 20px; background-color: #f3f4f6; padding: 10px; text-align: center; font-size: 12px; color: #4b5563; } ")
 				.append("</style></head><body>");
 
 		htmlBuilder.append("<div class='header'>")
 				.append("<div style='display: table-cell; vertical-align: middle; text-align: left;'>")
 				.append("<span class='title-main'>Relatório de Eventos Acadêmicos</span>").append("</div>")
-				.append("<div style='display: table-cell; vertical-align: middle; text-align: right; width: 40px;'>")
-				.append(iconSvg).append("</div>").append("</div>");
+				.append("<div style='display: table-cell; vertical-align: middle; text-align: right; width: 40px;'>").append("</div>").append("</div>");
 
 		for (EventoRelatorioDTO evento : eventos) {
 			htmlBuilder.append("<div class='container'>");
