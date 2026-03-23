@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -119,7 +120,7 @@ public class UsuarioController {
 	@Operation(summary = "Ativar um usuário", description = "Ativar um usuário na plataforma.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Usuario ativado com sucesso"), })
 	@PreAuthorize("hasAnyRole('ADMIN', 'GESTOR')")
-	@PostMapping(value =  "/{id}")
+	@PutMapping(value =  "/{id}")
 	public ResponseEntity<?> activeUser(@PathVariable String id, @RequestParam String action) {
 		if(!"active".equals(action)) throw new InvalidOperation(action);
 		activeUserUseCase.execute(id);
