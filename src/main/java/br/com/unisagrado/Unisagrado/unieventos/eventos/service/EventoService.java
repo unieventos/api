@@ -12,7 +12,9 @@ import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.CreateEventRecord;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.exception.EventNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.repository.EventoRepository;
-import br.com.unisagrado.Unisagrado.unieventos.eventos.translator.EventoTranslator;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.translator.EventoTranslatorCreateEventRecord;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.translator.EventoTranslatorDTOV1;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.translator.EventoTranslatorRecord;
 import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 import br.com.unisagrado.Unisagrado.unieventos.users.service.UserService;
 
@@ -21,10 +23,12 @@ public class EventoService {
 
 	private EventoRepository eventoRepository;
 	private UserService userService;
+	private EventoTranslatorCreateEventRecord createEventRecord;
 
-	public EventoService(EventoRepository eventoRepository, UserService userService) {
+	public EventoService(EventoRepository eventoRepository, UserService userService, EventoTranslatorCreateEventRecord createEventRecord) {
 		this.eventoRepository = eventoRepository;
 		this.userService = userService;
+		this.createEventRecord = new EventoTranslatorCreateEventRecord();
 	}
 
 	public List<Evento> findAll(Pageable pageable, String name) {
@@ -43,7 +47,7 @@ public class EventoService {
 	}
 
 	public Evento createNewEvent(CreateEventRecord createEvent) {
-		Evento entity = EventoTranslator.toEntity(createEvent);
+		Evento entity = createEventRecord.toEntity(createEvent);
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Usuario byLogin = userService.findByLogin(authentication.getName());
 		entity.setUsuarioCriador(byLogin);
