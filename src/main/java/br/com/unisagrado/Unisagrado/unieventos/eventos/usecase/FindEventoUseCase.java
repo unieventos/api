@@ -16,7 +16,7 @@ public class FindEventoUseCase {
 	private EventoService eventosService;
 	private EventoTranslatorDTOV1 eventoTranslatorDTOV1;
 
-	public FindEventoUseCase(EventoService eventosService, EventoTranslatorDTOV1 eventoTranslatorDTOV1) {
+	public FindEventoUseCase(EventoService eventosService) {
 		this.eventosService = eventosService;
 		this.eventoTranslatorDTOV1 = new EventoTranslatorDTOV1();
 	}

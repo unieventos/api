@@ -22,11 +22,11 @@ public class RelatorioEventoUseCase {
 	private EventoTranslatorEventoRelatorioDTO eventoTranslatorEventoRelatorioDTO;
 
 	public RelatorioEventoUseCase(EventoService eventoService, RelatorioEventoService relatorioEventoService,
-			FotoService fotoService, EventoTranslatorEventoRelatorioDTO eventoTranslatorEventoRelatorioDTO) {
+			FotoService fotoService) {
 		this.eventoService = eventoService;
 		this.relatorioEventoService = relatorioEventoService;
 		this.fotoService = fotoService;
-		this.eventoTranslatorEventoRelatorioDTO = eventoTranslatorEventoRelatorioDTO;
+		this.eventoTranslatorEventoRelatorioDTO = new EventoTranslatorEventoRelatorioDTO();
 	}
 
 
