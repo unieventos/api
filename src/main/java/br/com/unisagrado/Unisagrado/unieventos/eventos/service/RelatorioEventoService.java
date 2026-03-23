@@ -26,8 +26,13 @@ public class RelatorioEventoService {
 	private String carregarSvgDaPasta() {
 		try {
 			ClassPathResource resource = new ClassPathResource("static/images/logo.svg");
-
-			return new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+	        byte[] bytes = resource.getInputStream().readAllBytes();
+	        String svgContent = new String(bytes, StandardCharsets.UTF_8);
+	        
+	        return svgContent
+	                  .replaceAll("[\\r\\n]+", " ")
+	                  .trim()
+	                  .replaceFirst("^<\\?xml.*?\\?>", "");
 		} catch (Exception e) {
 			logger.error("Erro ao carregar o ícone SVG: " + e.getMessage());
 			return "";
