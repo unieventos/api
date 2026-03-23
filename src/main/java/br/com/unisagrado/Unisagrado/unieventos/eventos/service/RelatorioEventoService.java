@@ -2,7 +2,6 @@ package br.com.unisagrado.Unisagrado.unieventos.eventos.service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,18 +22,16 @@ import br.com.unisagrado.Unisagrado.unieventos.fotos.service.FotoService;
 public class RelatorioEventoService {
 	private static final Logger logger = LoggerFactory.getLogger(FotoService.class);
 
-	private String carregarSvgDaPasta() {
+	private String carregarSvgComoImagem() {
 		try {
 			ClassPathResource resource = new ClassPathResource("static/images/logo.svg");
-	        byte[] bytes = resource.getInputStream().readAllBytes();
-	        String svgContent = new String(bytes, StandardCharsets.UTF_8);
-	        
-	        return svgContent
-	                  .replaceAll("[\\r\\n]+", " ")
-	                  .trim()
-	                  .replaceFirst("^<\\?xml.*?\\?>", "");
+			byte[] bytes = resource.getInputStream().readAllBytes();
+			String base64 = Base64.getEncoder().encodeToString(bytes);
+
+			logger.info(base64);
+			return "<img src='data:image/svg+xml;base64," + base64 + "' style='width: 30px; height: auto;' />";
 		} catch (Exception e) {
-			logger.error("Erro ao carregar o ícone SVG: " + e.getMessage());
+			logger.error("Erro ao converter SVG para Base64: " + e.getMessage());
 			return "";
 		}
 	}
@@ -42,7 +39,7 @@ public class RelatorioEventoService {
 	public byte[] gerarRelatorioEventos(List<EventoRelatorioDTO> eventos) {
 		ByteArrayOutputStream target = new ByteArrayOutputStream();
 		StringBuilder htmlBuilder = new StringBuilder();
-		String iconSvg = carregarSvgDaPasta();
+		String iconSvg = carregarSvgComoImagem();
 
 		htmlBuilder.append("<html><head><meta charset='UTF-8'><style>").append(
 				"body { font-family: sans-serif; background-color: #f9fafb; color: #1f2937; margin: 0; padding: 20px; } ")
