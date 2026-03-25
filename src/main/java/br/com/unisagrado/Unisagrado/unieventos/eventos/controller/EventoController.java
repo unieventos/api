@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.CreateEventRecord;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoResourceV1;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.FilterRelatorioDTO;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.CreateEventUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.FindEventoUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.FindFotosEventoUseCase;
@@ -126,8 +127,8 @@ public class EventoController {
 	@Operation(summary = "Gerar relatório de eventos", description = "Gerar relatório dos id de eventos passados.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Relatório gerado com sucesso"), })
 	@PostMapping(params = "action=relatorio")
-	public ResponseEntity<?> activeUser(@RequestBody List<String> ids) {
-		byte[] pdfBytes = relatorioEventoUseCase.execute(ids);
+	public ResponseEntity<?> activeUser(@RequestBody FilterRelatorioDTO filter) {
+		byte[] pdfBytes = relatorioEventoUseCase.execute(filter);
 		
 		return ResponseEntity.ok()
 	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=eventos.pdf")

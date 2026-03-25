@@ -9,7 +9,7 @@ public class EventoTranslatorEventoRelatorioDTO implements EventoTranslatorDTO<E
 
 	@Override
 	public EventoRelatorioDTO toDto(Evento evento) {
-		return new EventoRelatorioDTO(evento.getNomeEvento(), evento.getDescricao(), evento.getDateInicio(), evento.getDateFim());
+		return new EventoRelatorioDTO(evento.getNomeEvento(), evento.getDescricao(), evento.getDateInicio(), evento.getDateFim(), evento.getCourse().getNome());
 	}
 
 	@Override

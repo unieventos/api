@@ -4,7 +4,6 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 
 import br.com.unisagrado.Unisagrado.unieventos.eventos.controller.EventoController;
-import br.com.unisagrado.Unisagrado.unieventos.users.controller.UsuarioController;
 
 public class EventoResourceV1 extends RepresentationModel<EventoResourceV1> {
 	private final EventoDTOV1 eventoDTOV1;

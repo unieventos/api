@@ -27,6 +27,9 @@
 			<column name="usuario_criador" type="VARCHAR(36)">
 				<constraints nullable="false" />
 			</column>
+			<column name="curso" type="VARCHAR(200)">
+				<constraints nullable="false" />
+			</column>
 		</createTable>
 	</changeSet>
 

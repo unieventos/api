@@ -11,20 +11,33 @@ public class EventoRelatorioDTO {
 	private LocalDate dateInicio;
 	private LocalDate dateFim;
 	private Foto foto;
+	private String curso;
 	
-	public EventoRelatorioDTO(String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim) {
+	public EventoRelatorioDTO(String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim, String curso) {
 		this.nomeEvento = nomeEvento;
 		this.descricao = descricao;
 		this.dateInicio = dateInicio;
 		this.dateFim = dateFim;
+		this.curso = curso;
 	}
 	
-	public EventoRelatorioDTO(String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim, Foto foto) {
+	public EventoRelatorioDTO(String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim,String curso, Foto foto) {
 		this.nomeEvento = nomeEvento;
 		this.descricao = descricao;
 		this.dateInicio = dateInicio;
 		this.dateFim = dateFim;
 		this.foto = foto;
+		this.curso = curso;
+	}
+	
+	
+
+	public String getCurso() {
+		return curso;
+	}
+
+	public void setCurso(String curso) {
+		this.curso = curso;
 	}
 
 	public String getNomeEvento() {

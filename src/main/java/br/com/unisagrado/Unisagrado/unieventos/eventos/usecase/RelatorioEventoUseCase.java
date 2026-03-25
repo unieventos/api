@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoRelatorioDTO;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.FilterRelatorioDTO;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.service.EventFilterStrategy;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.service.EventoService;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.service.RelatorioEventoService;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.translator.EventoTranslatorEventoRelatorioDTO;
@@ -20,23 +22,26 @@ public class RelatorioEventoUseCase {
 	private RelatorioEventoService relatorioEventoService;
 	private FotoService fotoService;
 	private EventoTranslatorEventoRelatorioDTO eventoTranslatorEventoRelatorioDTO;
-
+	private List<EventFilterStrategy> eventFilterStrategies;
+	
 	public RelatorioEventoUseCase(EventoService eventoService, RelatorioEventoService relatorioEventoService,
-			FotoService fotoService) {
+			FotoService fotoService, List<EventFilterStrategy> eventFilterStrategies) {
 		this.eventoService = eventoService;
 		this.relatorioEventoService = relatorioEventoService;
 		this.fotoService = fotoService;
 		this.eventoTranslatorEventoRelatorioDTO = new EventoTranslatorEventoRelatorioDTO();
+		this.eventFilterStrategies = eventFilterStrategies;
 	}
 
 
-	public byte[] execute(List<String> eventosId) {
-		List<Evento> eventos = new ArrayList<Evento>();
+	public byte[] execute(FilterRelatorioDTO filter) {
 		
-		for(String id : eventosId) {
-			Evento evento = eventoService.findById(id);
-			eventos.add(evento);
-		}
+		EventFilterStrategy strategy = eventFilterStrategies.stream()
+	            .filter(s -> s.isApplicable(filter.getFilterType()))
+	            .findFirst()
+	            .orElseThrow(() -> new IllegalArgumentException("Tipo de filtro inválido"));
+
+        List<Evento> eventos = strategy.filter(filter);
 		
 		List<EventoRelatorioDTO> eventoRelatorioDTO = new ArrayList<EventoRelatorioDTO>();
 		

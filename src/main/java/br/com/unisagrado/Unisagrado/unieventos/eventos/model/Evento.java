@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Set;
 
 import br.com.unisagrado.Unisagrado.unieventos.categoria.model.Categoria;
+import br.com.unisagrado.Unisagrado.unieventos.courses.model.Course;
 import br.com.unisagrado.Unisagrado.unieventos.model.ContemFoto;
 import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 import jakarta.persistence.Column;
@@ -40,6 +41,10 @@ public class Evento implements ContemFoto {
 	@ManyToOne
     @JoinColumn(name = "usuario_criador")
 	private Usuario usuarioCriador;
+	
+	@ManyToOne
+	@JoinColumn(name = "curso")
+	private Course course;
 
 	@ManyToMany
 	@JoinTable(name = "usuario_evento_permissao", joinColumns = @JoinColumn(name = "evento_id"), inverseJoinColumns = @JoinColumn(name = "usuario_id"))
@@ -48,12 +53,12 @@ public class Evento implements ContemFoto {
 	@ManyToMany
 	@JoinTable(name = "evento_categoria", joinColumns = @JoinColumn(name = "evento_id"), inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private Set<Categoria> eventoCategoria;
-
+	
 	public Evento() {
 	}
 
 	public Evento(String id, String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim,
-			Usuario usuarioCriador, Set<Usuario> usuariosPermissao, Set<Categoria> eventoCategoria) {
+			Usuario usuarioCriador, Set<Usuario> usuariosPermissao, Set<Categoria> eventoCategoria, Course course) {
 		this.id = id;
 		this.nomeEvento = nomeEvento;
 		this.descricao = descricao;
@@ -62,6 +67,15 @@ public class Evento implements ContemFoto {
 		this.usuarioCriador = usuarioCriador;
 		this.usuariosPermissao = usuariosPermissao;
 		this.eventoCategoria = eventoCategoria;
+		this.course = course;
+	}
+	
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 
 	public String getId() {

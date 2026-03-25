@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.core.io.ByteArrayResource;
@@ -20,23 +19,19 @@ import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.FotosForTargetIdN
 import br.com.unisagrado.Unisagrado.unieventos.fotos.exception.GenericException;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.model.Foto;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.repository.FotoRepository;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.repository.FotoRepositoryCustom;
 import br.com.unisagrado.Unisagrado.unieventos.model.Comentario;
 import br.com.unisagrado.Unisagrado.unieventos.model.ContemFoto;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 
 @Service
 public class FotoService {
 
 	private FotoRepository fotoRepository;
-	private EntityManager entityManager;
+	private FotoRepositoryCustom fotoRepositoryImpl;
 
-	public FotoService(FotoRepository fotoRepository, EntityManager entityManager) {
+	public FotoService(FotoRepository fotoRepository, FotoRepositoryCustom fotoRepositoryImpl) {
 		this.fotoRepository = fotoRepository;
-		this.entityManager = entityManager;
+		this.fotoRepositoryImpl = fotoRepositoryImpl;
 	}
 
 	public List<Foto> findAll(Pageable pageable) {
@@ -53,61 +48,35 @@ public class FotoService {
 		return fotoRepository.findById(id).orElseThrow(FotoNotFoundException::new);
 	}
 
-	public void createNewFoto(CreateFotoRecord record, String newFilePath) {
-		Class<? extends ContemFoto> tipo = switch (record.tipo().toUpperCase()) {
-		case "EVENTO" -> Evento.class;
-		case "COMENTARIO" -> Comentario.class;
-		default -> throw new IllegalArgumentException("Tipo inválido: " + record.tipo());
-		};
-
-		ContemFoto alvo = (ContemFoto) entityManager.find(tipo, record.id());
-		if (alvo == null) {
-			throw new IllegalArgumentException(
-					"Registro não encontrado para tipo: " + tipo.getSimpleName() + " e id: " + record.id());
-		}
-
-		fotoRepository.save(new Foto(newFilePath, alvo));
-	}
-	
-	private <T> List<Foto> findFotosByTargetId(String targetId, Class<T> type){
-		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Foto> query = builder.createQuery(Foto.class);
-		Root<Foto> from = query.from(Foto.class);
-		
-		T reference = entityManager.getReference(type, targetId);
-
-		List<Predicate> predicates = new ArrayList<>();
-		
-		predicates.add(builder.equal(from.get("alvo"), reference));
-
-		query.where(builder.or(predicates.toArray(new Predicate[0])));
-		return entityManager.createQuery(query).getResultList();
-	}
-	
-	
-	public List<Foto> findFotosByEventoId(String targetId){
-		return findFotosByTargetId(targetId, Evento.class);
-	}
-	
-	public List<Foto> findFotosByComentarioId(String targetId){
-		return findFotosByTargetId(targetId, Comentario.class);
-
-	}
-	
-	public Foto findFirstFotoByEventoId(String eventoId){
-		List<Foto> fotosByTargetId = findFotosByEventoId(eventoId);
-		if(fotosByTargetId.isEmpty()) throw new FotosForTargetIdNotFoundException(eventoId);
+	public Foto findFirstFotoByEventoId(String eventoId) {
+		List<Foto> fotosByTargetId = fotoRepositoryImpl.findFotosByEventoId(eventoId);
+		if (fotosByTargetId.isEmpty())
+			throw new FotosForTargetIdNotFoundException(eventoId);
 		return fotosByTargetId.get(0);
 	}
-	
-	public Resource downloadFoto(Foto foto){
-        Path path = Paths.get(foto.getPath());
-    	try {
-    		byte[] bytesDaFoto = Files.readAllBytes(path);
-            return new ByteArrayResource(bytesDaFoto);
+
+	public Resource downloadFoto(Foto foto) {
+		Path path = Paths.get(foto.getPath());
+		try {
+			byte[] bytesDaFoto = Files.readAllBytes(path);
+			return new ByteArrayResource(bytesDaFoto);
 		} catch (IOException e) {
 			throw new GenericException(e);
 		}
+	}
+
+	public void createNewFoto(CreateFotoRecord record, String newFilePath) {
+		Class<? extends ContemFoto> tipo = switch (record.tipo().toUpperCase()) {
+			case "EVENTO" -> Evento.class;
+			case "COMENTARIO" -> Comentario.class;
+			default -> throw new IllegalArgumentException("Tipo inválido: " + record.tipo());
+		};
+		
+		fotoRepositoryImpl.createNewFoto(record, newFilePath, tipo);
+	}
+
+	public List<Foto> findFotosByEventoId(String id) {
+		return fotoRepositoryImpl.findFotosByEventoId(id);
 	}
 
 }
