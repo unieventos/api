@@ -47,7 +47,7 @@ public class UserService {
 	@Transactional
 	public void createUser(CreateUserRecord createUserRecord) {
 
-		Course curso = cursoService.findCursoByName(createUserRecord.curso());
+		Course curso = cursoService.findCourseById(createUserRecord.curso());
 		Role role = roleService.findRoleByNome(createUserRecord.role());
 
 		Usuario user = new Usuario();
