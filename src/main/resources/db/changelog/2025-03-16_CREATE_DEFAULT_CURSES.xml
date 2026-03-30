@@ -13,6 +13,9 @@
 			<column name="nome" value="Administração" />
 		</insert>
 		<insert tableName="curso">
+			<column name="nome" value="GERAL" />
+		</insert>
+		<insert tableName="curso">
 			<column name="nome" value="Arquitetura e Urbanismo" />
 		</insert>
 		<insert tableName="curso">
