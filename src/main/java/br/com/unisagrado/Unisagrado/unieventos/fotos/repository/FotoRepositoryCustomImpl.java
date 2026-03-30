@@ -16,6 +16,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import jakarta.transaction.Transactional;
 
 @Repository
 public class FotoRepositoryCustomImpl implements FotoRepositoryCustom{
@@ -44,6 +45,7 @@ public class FotoRepositoryCustomImpl implements FotoRepositoryCustom{
 	}
 	
 
+	@Transactional
 	public void createNewFoto(CreateFotoRecord record, String newFilePath, Class<? extends ContemFoto> tipo) {
 		ContemFoto alvo = (ContemFoto) entityManager.find(tipo, record.id());
 		if (alvo == null) {
