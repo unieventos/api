@@ -10,6 +10,7 @@
 		</preConditions>
 
 		<insert tableName="categoria">
+			<column name="categoria_id" value="4d22f2a5-0c6a-4e8f-a517-31b4ec191f48" />
 			<column name="nome_categoria" value="MiniCurso" />
 		</insert>
 	</changeSet>
