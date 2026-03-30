@@ -41,7 +41,7 @@ public class CourseFilterStrategy implements EventFilterStrategy {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Evento> query = builder.createQuery(Evento.class);
 		Root<Evento> from = query.from(Evento.class);
-		Join<Evento, Course> course = from.join("curso");
+		Join<Evento, Course> course = from.join("course");
 		query.where(builder.equal(course.get("id"), courseId));
 
 		return entityManager.createQuery(query).getResultList();
