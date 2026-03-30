@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Repository;
 
-import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.FilterRelatorioDTO;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.FilterEventoDTO;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.FilterRelatorioType;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.service.EventFilterStrategy;
@@ -31,7 +31,7 @@ public class IdsRangeFilterStrategy implements EventFilterStrategy {
 	}
 
 	@Override
-	public List<Evento> filter(FilterRelatorioDTO params) {
+	public List<Evento> filter(FilterEventoDTO params) {
 		List<String> eventIds = params.getParams().getEventIds();
 		boolean eventIdsIsNull = Objects.isNull(eventIds);
 		boolean eventIdsIsEmpty = eventIdsIsNull ? false : eventIds.isEmpty();

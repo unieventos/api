@@ -3,15 +3,15 @@ package br.com.unisagrado.Unisagrado.unieventos.eventos.dto;
 import java.util.Date;
 import java.util.List;
 
-public class FilterRelatorioDTO {
+public class FilterEventoDTO {
 
 	private FilterRelatorioType filterType;
 	private Params params;
 
-	public FilterRelatorioDTO() {
+	public FilterEventoDTO() {
 	}
 
-	public FilterRelatorioDTO(FilterRelatorioType filterType, Params params) {
+	public FilterEventoDTO(FilterRelatorioType filterType, Params params) {
 		super();
 		this.filterType = filterType;
 		this.params = params;

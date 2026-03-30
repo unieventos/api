@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoRelatorioDTO;
-import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.FilterRelatorioDTO;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.FilterEventoDTO;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.service.EventFilterStrategy;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.service.EventoService;
@@ -34,7 +34,7 @@ public class RelatorioEventoUseCase {
 	}
 
 
-	public byte[] execute(FilterRelatorioDTO filter) {
+	public byte[] execute(FilterEventoDTO filter) {
 		
 		EventFilterStrategy strategy = eventFilterStrategies.stream()
 	            .filter(s -> s.isApplicable(filter.getFilterType()))
