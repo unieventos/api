@@ -10,7 +10,7 @@
 		</preConditions>
 
 		<insert tableName="categoria">
-			<column name="nomeCategoria" value="MiniCurso" />
+			<column name="nome_categoria" value="MiniCurso" />
 		</insert>
 	</changeSet>
 </databaseChangeLog>
