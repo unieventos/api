@@ -7,6 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateEventRecord(@NotBlank String nomeEvento,@NotBlank String descricao,
-		@NotNull LocalDate dateInicio,@NotNull LocalDate dateFim,@NotNull List<String> categorias, @NotNull String courseId) {
+		@NotNull LocalDate dateInicio,@NotNull LocalDate dateFim,@NotNull List<String> categorias, @NotNull Long courseId) {
 
 }

@@ -7,6 +7,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import br.com.unisagrado.Unisagrado.unieventos.courses.model.Course;
+import br.com.unisagrado.Unisagrado.unieventos.courses.service.CourseService;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.CreateEventRecord;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.exception.EventNotFoundException;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
@@ -21,11 +23,13 @@ public class EventoService {
 	private EventoRepository eventoRepository;
 	private UserService userService;
 	private EventoTranslatorCreateEventRecord createEventRecord;
+	private CourseService courseService;
 
-	public EventoService(EventoRepository eventoRepository, UserService userService) {
+	public EventoService(EventoRepository eventoRepository, UserService userService, CourseService courseService) {
 		this.eventoRepository = eventoRepository;
 		this.userService = userService;
 		this.createEventRecord = new EventoTranslatorCreateEventRecord();
+		this.courseService = courseService;
 	}
 
 	public List<Evento> findAll(Pageable pageable, String name) {
@@ -45,6 +49,10 @@ public class EventoService {
 
 	public Evento createNewEvent(CreateEventRecord createEvent) {
 		Evento entity = createEventRecord.toEntity(createEvent);
+		
+		Course courseById = courseService.findCourseById(createEvent.courseId());
+		entity.setCourse(courseById);
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Usuario byLogin = userService.findByLogin(authentication.getName());
 		entity.setUsuarioCriador(byLogin);
