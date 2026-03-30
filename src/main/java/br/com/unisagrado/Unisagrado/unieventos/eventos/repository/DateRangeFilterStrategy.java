@@ -43,10 +43,10 @@ public class DateRangeFilterStrategy implements EventFilterStrategy {
 
 		List<Predicate> predicates = new ArrayList<>();
 		
-		predicates.add(builder.equal(from.get("dateInicio"), params.getParams().getStartDate()));
-		predicates.add(builder.equal(from.get("dateFim"), params.getParams().getStartDate()));
+		predicates.add(builder.greaterThan(from.get("dateInicio"), params.getParams().getStartDate()));
+		predicates.add(builder.lessThan(from.get("dateFim"), params.getParams().getEndDate()));
 
-		query.where(builder.or(predicates.toArray(new Predicate[0])));
+		query.where(builder.and(predicates.toArray(new Predicate[0])));
 		
 		return entityManager.createQuery(query).getResultList();
 	}
