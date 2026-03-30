@@ -13,7 +13,7 @@
 			<column name="nome" value="Administração" />
 		</insert>
 		<insert tableName="curso">
-			<column name="nome" value="GERAL" />
+			<column name="nome" value="Geral" />
 		</insert>
 		<insert tableName="curso">
 			<column name="nome" value="Arquitetura e Urbanismo" />

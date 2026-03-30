@@ -25,3 +25,5 @@ databaseChangeLog:
       file: db/changelog/2025-04-23_CREATE_DEFAULT_USER.xml
   - include:
       file: db/changelog/2025-04-23_CREATE_TABLE_PROFILE.xml
+  - include:
+      file: db/changelog/2026-03-16_CREATE_DEFAULT_CATEGORY.xml
