@@ -27,7 +27,7 @@ public class CategoryFilterStrategy implements EventFilterStrategy {
 
 	@Override
 	public boolean isApplicable(FilterRelatorioType type) {
-		return type == FilterRelatorioType.COURSE;
+		return type == FilterRelatorioType.CATEGORY;
 	}
 
 	@Override
