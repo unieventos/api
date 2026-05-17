@@ -20,10 +20,14 @@ public class UpdateEventUseCase {
 	private EventoTranslatorDTOV1 dtov1;
 	private UpdateFotosUseCase updateFotosUseCase;
 
-	public UpdateEventUseCase(EventoService eventoService, EventoTranslatorDTOV1 dtov1) {
+
+	public UpdateEventUseCase(EventoService eventoService, EventoTranslatorDTOV1 dtov1,
+			UpdateFotosUseCase updateFotosUseCase) {
 		this.eventoService = eventoService;
 		this.dtov1 = dtov1;
+		this.updateFotosUseCase = updateFotosUseCase;
 	}
+
 
 	public EventoDTOV1 execute(String eventoId, UpdateEventoDTO updateEvento, Optional<List<MultipartFile>> fotos) {
 		if(fotos.isPresent()) updateFotosUseCase.updateForEventoId(eventoId, fotos.get());
