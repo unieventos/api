@@ -70,6 +70,16 @@ public class Evento implements ContemFoto {
 		this.course = course;
 	}
 	
+	public Evento(String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim,
+			Set<Categoria> eventoCategoria, Course course) {
+		this.nomeEvento = nomeEvento;
+		this.descricao = descricao;
+		this.dateInicio = dateInicio;
+		this.dateFim = dateFim;
+		this.eventoCategoria = eventoCategoria;
+		this.course = course;
+	}
+	
 	public Course getCourse() {
 		return course;
 	}
@@ -145,5 +155,17 @@ public class Evento implements ContemFoto {
 	@Override
 	public String nome() {
 		return "Evento";
+	}
+
+	public void update(Evento evento) {
+		this.setCourse(evento.getCourse());
+		this.setDateFim(evento.getDateFim());
+		this.setDateInicio(evento.getDateInicio());
+		this.setDescricao(evento.getDescricao());
+		this.setEventoCategoria(evento.getEventoCategoria());
+		this.setId(evento.getId());
+		this.setNomeEvento(evento.getNomeEvento());
+		this.setUsuarioCriador(evento.getUsuarioCriador());
+		this.setUsuariosPermissao(evento.getUsuariosPermissao());
 	}
 }

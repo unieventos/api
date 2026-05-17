@@ -32,6 +32,10 @@ public class Course {
     	this.nome = nome;
     }
     
+    public Course(Long id) {
+    	this.id = id;
+    }
+    
     public Course(String nome) {
     	this.nome = nome;
     }

@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,11 +29,13 @@ import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.CreateEventRecord;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoResourceV1;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.FilterEventoDTO;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.UpdateEventoDTO;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.CreateEventUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.DownloadFotoEvento;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.FindEventoUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.FindFotosEventoUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.RelatorioEventoUseCase;
+import br.com.unisagrado.Unisagrado.unieventos.eventos.usecase.UpdateEventUseCase;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.dto.FotoDTOV1;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -44,15 +47,17 @@ public class EventoController {
 
 	private FindEventoUseCase findEventoUseCase;
 	private CreateEventUseCase createEventUseCase;
+	private UpdateEventUseCase updateEventUseCase;
 	private DownloadFotoEvento downloadFotoEvento;
 	private FindFotosEventoUseCase findFotosEventoUseCase;
 	private RelatorioEventoUseCase relatorioEventoUseCase;
 
 	public EventoController(FindEventoUseCase findEventoUseCase, CreateEventUseCase createEventUseCase,
-			DownloadFotoEvento downloadFotoEvento, FindFotosEventoUseCase findFotosEventoUseCase,
-			RelatorioEventoUseCase relatorioEventoUseCase) {
+			UpdateEventUseCase updateEventUseCase, DownloadFotoEvento downloadFotoEvento,
+			FindFotosEventoUseCase findFotosEventoUseCase, RelatorioEventoUseCase relatorioEventoUseCase) {
 		this.findEventoUseCase = findEventoUseCase;
 		this.createEventUseCase = createEventUseCase;
+		this.updateEventUseCase = updateEventUseCase;
 		this.downloadFotoEvento = downloadFotoEvento;
 		this.findFotosEventoUseCase = findFotosEventoUseCase;
 		this.relatorioEventoUseCase = relatorioEventoUseCase;
@@ -75,7 +80,7 @@ public class EventoController {
 						.linkTo(WebMvcLinkBuilder.methodOn(EventoController.class).findAll(page, size, sortBy, name))
 						.withSelfRel());
 	}
-	
+
 	@PostMapping("/search")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Eventos encontrados"),
 			@ApiResponse(responseCode = "404", description = "Eventos não encontrados"),
@@ -89,8 +94,8 @@ public class EventoController {
 		List<EventoResourceV1> list = all.stream().map(EventoResourceV1::new).toList();
 
 		return CollectionModel.of(list,
-				WebMvcLinkBuilder
-						.linkTo(WebMvcLinkBuilder.methodOn(EventoController.class).searchWithFilter(page, size, sortBy, filter))
+				WebMvcLinkBuilder.linkTo(
+						WebMvcLinkBuilder.methodOn(EventoController.class).searchWithFilter(page, size, sortBy, filter))
 						.withSelfRel());
 	}
 
@@ -111,10 +116,8 @@ public class EventoController {
 	public CollectionModel<FotoDTOV1> findFotos(@PathVariable String id) {
 		List<FotoDTOV1> resource = findFotosEventoUseCase.execute(id);
 
-		return CollectionModel.of(resource,
-				WebMvcLinkBuilder
-						.linkTo(WebMvcLinkBuilder.methodOn(EventoController.class).findFotos(id))
-						.withSelfRel());
+		return CollectionModel.of(resource, WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(EventoController.class).findFotos(id)).withSelfRel());
 	}
 
 	@GetMapping("/{id}/fotos/download")
@@ -139,16 +142,23 @@ public class EventoController {
 
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
-	
+
 	@Operation(summary = "Gerar relatório de eventos", description = "Gerar relatório dos id de eventos passados.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Relatório gerado com sucesso"), })
 	@PostMapping(params = "action=relatorio")
 	public ResponseEntity<?> activeUser(@RequestBody FilterEventoDTO filter) {
 		byte[] pdfBytes = relatorioEventoUseCase.execute(filter);
-		
-		return ResponseEntity.ok()
-	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=eventos.pdf")
-	            .contentType(MediaType.APPLICATION_PDF)
-	            .body(pdfBytes);
+
+		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=eventos.pdf")
+				.contentType(MediaType.APPLICATION_PDF).body(pdfBytes);
+	}
+
+	@PutMapping(value = "/{id}" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Evento registrado com sucesso"),
+			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
+	public ResponseEntity<EventoResourceV1> update(@PathVariable String id,@RequestPart("dados") UpdateEventoDTO dados,
+			@RequestPart(name = "fotos", required = false) Optional<List<MultipartFile>> fotos) {
+		return new ResponseEntity<EventoResourceV1>(new EventoResourceV1(updateEventUseCase.execute(id, dados, fotos)),
+				HttpStatus.OK);
 	}
 }

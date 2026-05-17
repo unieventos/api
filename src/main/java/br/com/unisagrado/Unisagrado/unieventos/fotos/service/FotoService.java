@@ -78,5 +78,11 @@ public class FotoService {
 	public List<Foto> findFotosByEventoId(String id) {
 		return fotoRepositoryImpl.findFotosByEventoId(id);
 	}
+	
+	public void deleteFotosForEventoId(String eventoId){
+		List<Foto> fotosByEventoId = findFotosByEventoId(eventoId);
+		
+		fotosByEventoId.stream().forEach(foto -> fotoRepository.delete(foto));
+	}
 
 }
