@@ -158,14 +158,14 @@ public class Evento implements ContemFoto {
 	}
 
 	public void update(Evento evento) {
-		this.setCourse(evento.getCourse());
-		this.setDateFim(evento.getDateFim());
-		this.setDateInicio(evento.getDateInicio());
-		this.setDescricao(evento.getDescricao());
-		this.setEventoCategoria(evento.getEventoCategoria());
-		this.setId(evento.getId());
-		this.setNomeEvento(evento.getNomeEvento());
-		this.setUsuarioCriador(evento.getUsuarioCriador());
-		this.setUsuariosPermissao(evento.getUsuariosPermissao());
+	    if (evento.getCourse() != null) this.setCourse(evento.getCourse());
+	    if (evento.getDateFim() != null) this.setDateFim(evento.getDateFim());
+	    if (evento.getDateInicio() != null) this.setDateInicio(evento.getDateInicio());
+	    if (evento.getDescricao() != null) this.setDescricao(evento.getDescricao());
+	    if (evento.getEventoCategoria() != null) this.setEventoCategoria(evento.getEventoCategoria());
+	    if (evento.getNomeEvento() != null) this.setNomeEvento(evento.getNomeEvento());
+	    if (evento.getUsuarioCriador() != null) this.setUsuarioCriador(evento.getUsuarioCriador());
+	    if (evento.getUsuariosPermissao() != null) this.setUsuariosPermissao(evento.getUsuariosPermissao());
 	}
+	
 }
