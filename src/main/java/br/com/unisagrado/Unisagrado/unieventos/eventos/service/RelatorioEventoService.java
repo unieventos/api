@@ -57,7 +57,10 @@ public class RelatorioEventoService {
 
 			if (evento.getFotos() != null && !evento.getFotos().isEmpty()) {
 				logger.info("Processando {} fotos para o evento: {}", evento.getFotos().size(), evento.getNomeEvento());
+				htmlBuilder.append("<p style='text-align: center; font-size: 12px; color: #6b7280;'>Total de fotos processadas: ")
+						.append(evento.getFotos().size()).append("</p>");
 				htmlBuilder.append("<div class='grid-fotos'>");
+				int fotoIndex = 1;
 				for (Foto foto : evento.getFotos()) {
 					try {
 						Path path = Paths.get(foto.getPath());
@@ -65,8 +68,12 @@ public class RelatorioEventoService {
 							byte[] bytesDaFoto = Files.readAllBytes(path);
 							String base64Image = Base64.getEncoder().encodeToString(bytesDaFoto);
 
+							htmlBuilder.append("<div style='display: inline-block; width: 40%; margin: 5px; vertical-align: top;'>");
 							htmlBuilder.append("<img src='data:image/png;base64,").append(base64Image)
-									.append("' class='foto' />");
+									.append("' style='width: 100%; border-radius: 4px;' />");
+							htmlBuilder.append("<div style='font-size: 10px; color: #9ca3af;'>Foto ").append(fotoIndex++)
+									.append("</div>");
+							htmlBuilder.append("</div>");
 						} else {
 							logger.warn("Arquivo de foto não encontrado no caminho: {}", foto.getPath());
 						}
