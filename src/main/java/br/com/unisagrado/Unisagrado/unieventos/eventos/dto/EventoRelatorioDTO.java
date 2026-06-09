@@ -1,6 +1,7 @@
 package br.com.unisagrado.Unisagrado.unieventos.eventos.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import br.com.unisagrado.Unisagrado.unieventos.fotos.model.Foto;
 
@@ -10,7 +11,7 @@ public class EventoRelatorioDTO {
 	private String descricao;
 	private LocalDate dateInicio;
 	private LocalDate dateFim;
-	private Foto foto;
+	private List<Foto> fotos;
 	private String curso;
 	
 	public EventoRelatorioDTO(String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim, String curso) {
@@ -21,12 +22,12 @@ public class EventoRelatorioDTO {
 		this.curso = curso;
 	}
 	
-	public EventoRelatorioDTO(String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim,String curso, Foto foto) {
+	public EventoRelatorioDTO(String nomeEvento, String descricao, LocalDate dateInicio, LocalDate dateFim, String curso, List<Foto> fotos) {
 		this.nomeEvento = nomeEvento;
 		this.descricao = descricao;
 		this.dateInicio = dateInicio;
 		this.dateFim = dateFim;
-		this.foto = foto;
+		this.fotos = fotos;
 		this.curso = curso;
 	}
 	
@@ -72,12 +73,12 @@ public class EventoRelatorioDTO {
 		this.dateFim = dateFim;
 	}
 
-	public Foto getFoto() {
-		return foto;
+	public List<Foto> getFotos() {
+		return fotos;
 	}
 
-	public void setFoto(Foto foto) {
-		this.foto = foto;
+	public void setFotos(List<Foto> fotos) {
+		this.fotos = fotos;
 	}
 
 }

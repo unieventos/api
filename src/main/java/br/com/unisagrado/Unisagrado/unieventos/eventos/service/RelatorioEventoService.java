@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import com.itextpdf.html2pdf.HtmlConverter;
 
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoRelatorioDTO;
+import br.com.unisagrado.Unisagrado.unieventos.fotos.model.Foto;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.service.FotoService;
 
 @Service
@@ -54,21 +55,23 @@ public class RelatorioEventoService {
 			htmlBuilder.append("<div class='content-text'><span class='bold'>Data:</span> ")
 					.append(evento.getDateInicio()).append(" até ").append(evento.getDateFim()).append("</div>");
 
-			if (evento.getFoto() != null) {
-				try {
-					Path path = Paths.get(evento.getFoto().getPath());
-					if (Files.exists(path)) {
-						byte[] bytesDaFoto = Files.readAllBytes(path);
-						String base64Image = Base64.getEncoder().encodeToString(bytesDaFoto);
+			if (evento.getFotos() != null && !evento.getFotos().isEmpty()) {
+				htmlBuilder.append("<div class='grid-fotos'>");
+				for (Foto foto : evento.getFotos()) {
+					try {
+						Path path = Paths.get(foto.getPath());
+						if (Files.exists(path)) {
+							byte[] bytesDaFoto = Files.readAllBytes(path);
+							String base64Image = Base64.getEncoder().encodeToString(bytesDaFoto);
 
-						htmlBuilder.append("<div class='grid-fotos'>");
-						htmlBuilder.append("<img src='data:image/png;base64,").append(base64Image)
-								.append("' class='foto' />");
-						htmlBuilder.append("</div>");
+							htmlBuilder.append("<img src='data:image/png;base64,").append(base64Image)
+									.append("' class='foto' />");
+						}
+					} catch (IOException e) {
+						logger.error("Erro ao processar imagem: " + e.getMessage());
 					}
-				} catch (IOException e) {
-					logger.error("Erro ao processar imagem: " + e.getMessage());
 				}
+				htmlBuilder.append("</div>");
 			}
 
 			htmlBuilder.append("</div>");

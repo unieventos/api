@@ -47,8 +47,8 @@ public class RelatorioEventoUseCase {
 		
 		for(Evento evento : eventos) {
 			EventoRelatorioDTO dto = eventoTranslatorEventoRelatorioDTO.toDto(evento);
-			Foto firstFotoByEventoId = fotoService.findFirstFotoByEventoId(evento.getId());
-			dto.setFoto(firstFotoByEventoId);
+			List<Foto> fotos = fotoService.findFotosByEventoId(evento.getId());
+			dto.setFotos(fotos);
 			eventoRelatorioDTO.add(dto);
 		}
 		

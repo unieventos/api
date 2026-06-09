@@ -146,17 +146,17 @@ public class EventoController {
 	@Operation(summary = "Gerar relatório de eventos", description = "Gerar relatório dos id de eventos passados.")
 	@ApiResponses(value = { @ApiResponse(responseCode = "204", description = "Relatório gerado com sucesso"), })
 	@PostMapping(params = "action=relatorio")
-	public ResponseEntity<?> activeUser(@RequestBody FilterEventoDTO filter) {
+	public ResponseEntity<?> relatorio(@RequestBody FilterEventoDTO filter) {
 		byte[] pdfBytes = relatorioEventoUseCase.execute(filter);
 
 		return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=eventos.pdf")
 				.contentType(MediaType.APPLICATION_PDF).body(pdfBytes);
 	}
 
-	@PutMapping(value = "/{id}" ,consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+	@PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	@ApiResponses(value = { @ApiResponse(responseCode = "201", description = "Evento registrado com sucesso"),
 			@ApiResponse(responseCode = "400", description = "Parametro evento inválido") })
-	public ResponseEntity<EventoResourceV1> update(@PathVariable String id,@RequestPart("dados") UpdateEventoDTO dados,
+	public ResponseEntity<EventoResourceV1> update(@PathVariable String id, @RequestPart("dados") UpdateEventoDTO dados,
 			@RequestPart(name = "fotos", required = false) Optional<List<MultipartFile>> fotos) {
 		return new ResponseEntity<EventoResourceV1>(new EventoResourceV1(updateEventUseCase.execute(id, dados, fotos)),
 				HttpStatus.OK);
