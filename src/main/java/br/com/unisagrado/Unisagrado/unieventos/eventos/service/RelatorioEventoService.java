@@ -35,8 +35,8 @@ public class RelatorioEventoService {
 				.append(".section-title { color: #dc2626; font-size: 18px; font-weight: 600; margin-bottom: 8px; border-bottom: 1px solid #fee2e2; } ")
 				.append(".content-text { margin-bottom: 8px; line-height: 1.5; } ")
 				.append(".bold { font-weight: bold; } ")
-				.append(".grid-fotos { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 15px; } ")
-				.append(".foto { width: 45%; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); } ")
+				.append(".grid-fotos { text-align: center; margin-top: 15px; } ")
+				.append(".foto { width: 45%; display: inline-block; margin: 5px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); } ")
 				.append(".footer { margin-top: 20px; background-color: #f3f4f6; padding: 10px; text-align: center; font-size: 12px; color: #4b5563; } ")
 				.append("</style></head><body>");
 
@@ -56,6 +56,7 @@ public class RelatorioEventoService {
 					.append(evento.getDateInicio()).append(" até ").append(evento.getDateFim()).append("</div>");
 
 			if (evento.getFotos() != null && !evento.getFotos().isEmpty()) {
+				logger.info("Processando {} fotos para o evento: {}", evento.getFotos().size(), evento.getNomeEvento());
 				htmlBuilder.append("<div class='grid-fotos'>");
 				for (Foto foto : evento.getFotos()) {
 					try {
@@ -66,6 +67,8 @@ public class RelatorioEventoService {
 
 							htmlBuilder.append("<img src='data:image/png;base64,").append(base64Image)
 									.append("' class='foto' />");
+						} else {
+							logger.warn("Arquivo de foto não encontrado no caminho: {}", foto.getPath());
 						}
 					} catch (IOException e) {
 						logger.error("Erro ao processar imagem: " + e.getMessage());
