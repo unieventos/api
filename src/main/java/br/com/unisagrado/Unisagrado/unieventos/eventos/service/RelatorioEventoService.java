@@ -19,11 +19,10 @@ import com.itextpdf.html2pdf.HtmlConverter;
 
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoRelatorioDTO;
 import br.com.unisagrado.Unisagrado.unieventos.fotos.model.Foto;
-import br.com.unisagrado.Unisagrado.unieventos.fotos.service.FotoService;
 
 @Service
 public class RelatorioEventoService {
-	private static final Logger logger = LoggerFactory.getLogger(FotoService.class);
+	private static final Logger logger = LoggerFactory.getLogger(RelatorioEventoService.class);
 
 	public byte[] gerarRelatorioEventos(List<EventoRelatorioDTO> eventos) {
 		ByteArrayOutputStream target = new ByteArrayOutputStream();
@@ -65,8 +64,16 @@ public class RelatorioEventoService {
 						if (Files.exists(path)) {
 							BufferedImage image = ImageIO.read(path.toFile());
 							if (image != null) {
+								// Garante que a imagem seja convertida para RGB (remove transparência que o JPEG não suporta)
+								BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+								java.awt.Graphics2D g2d = newImage.createGraphics();
+								g2d.setColor(java.awt.Color.WHITE);
+								g2d.fillRect(0, 0, image.getWidth(), image.getHeight());
+								g2d.drawImage(image, 0, 0, null);
+								g2d.dispose();
+
 								ByteArrayOutputStream baos = new ByteArrayOutputStream();
-								ImageIO.write(image, "jpg", baos);
+								ImageIO.write(newImage, "jpg", baos);
 								byte[] bytesDaFoto = baos.toByteArray();
 								String base64Image = Base64.getEncoder().encodeToString(bytesDaFoto);
 
@@ -75,7 +82,7 @@ public class RelatorioEventoService {
 										.append("' style='width: 100%; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);' />");
 								htmlBuilder.append("</div>");
 							} else {
-								logger.warn("Não foi possível decodificar a imagem (pode ser um formato não suportado): {}", foto.getPath());
+								logger.warn("ImageIO retornou null ao ler a imagem: {}", foto.getPath());
 							}
 						} else {
 							logger.warn("Arquivo de foto não encontrado no caminho: {}", foto.getPath());
