@@ -8,9 +8,11 @@ import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.html2pdf.HtmlConverter;
@@ -56,29 +58,30 @@ public class RelatorioEventoService {
 					.append(evento.getDateInicio()).append(" até ").append(evento.getDateFim()).append("</div>");
 
 			if (evento.getFotos() != null && !evento.getFotos().isEmpty()) {
-				logger.info("Processando {} fotos para o evento: {}", evento.getFotos().size(), evento.getNomeEvento());
-				htmlBuilder.append("<p style='text-align: center; font-size: 12px; color: #6b7280;'>Total de fotos processadas: ")
-						.append(evento.getFotos().size()).append("</p>");
 				htmlBuilder.append("<div class='grid-fotos'>");
-				int fotoIndex = 1;
 				for (Foto foto : evento.getFotos()) {
 					try {
 						Path path = Paths.get(foto.getPath());
 						if (Files.exists(path)) {
-							byte[] bytesDaFoto = Files.readAllBytes(path);
-							String base64Image = Base64.getEncoder().encodeToString(bytesDaFoto);
+							BufferedImage image = ImageIO.read(path.toFile());
+							if (image != null) {
+								ByteArrayOutputStream baos = new ByteArrayOutputStream();
+								ImageIO.write(image, "jpg", baos);
+								byte[] bytesDaFoto = baos.toByteArray();
+								String base64Image = Base64.getEncoder().encodeToString(bytesDaFoto);
 
-							htmlBuilder.append("<div style='display: inline-block; width: 40%; margin: 5px; vertical-align: top;'>");
-							htmlBuilder.append("<img src='data:image/png;base64,").append(base64Image)
-									.append("' style='width: 100%; border-radius: 4px;' />");
-							htmlBuilder.append("<div style='font-size: 10px; color: #9ca3af;'>Foto ").append(fotoIndex++)
-									.append("</div>");
-							htmlBuilder.append("</div>");
+								htmlBuilder.append("<div style='display: inline-block; width: 45%; margin: 5px; vertical-align: top;'>");
+								htmlBuilder.append("<img src='data:image/jpeg;base64,").append(base64Image)
+										.append("' style='width: 100%; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);' />");
+								htmlBuilder.append("</div>");
+							} else {
+								logger.warn("Não foi possível decodificar a imagem (pode ser um formato não suportado): {}", foto.getPath());
+							}
 						} else {
 							logger.warn("Arquivo de foto não encontrado no caminho: {}", foto.getPath());
 						}
 					} catch (IOException e) {
-						logger.error("Erro ao processar imagem: " + e.getMessage());
+						logger.error("Erro ao processar imagem {}: {}", foto.getPath(), e.getMessage());
 					}
 				}
 				htmlBuilder.append("</div>");
