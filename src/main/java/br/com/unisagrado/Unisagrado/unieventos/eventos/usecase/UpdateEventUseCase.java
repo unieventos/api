@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import br.com.unisagrado.Unisagrado.unieventos.courses.model.Course;
+import br.com.unisagrado.Unisagrado.unieventos.courses.service.CourseService;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.EventoDTOV1;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.dto.UpdateEventoDTO;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
@@ -19,7 +21,7 @@ public class UpdateEventUseCase {
 	private EventoService eventoService;
 	private EventoTranslatorDTOV1 dtov1;
 	private UpdateFotosUseCase updateFotosUseCase;
-
+	private CourseService courseService;
 
 	public UpdateEventUseCase(EventoService eventoService, EventoTranslatorDTOV1 dtov1,
 			UpdateFotosUseCase updateFotosUseCase) {
@@ -32,8 +34,9 @@ public class UpdateEventUseCase {
 	public EventoDTOV1 execute(String eventoId, UpdateEventoDTO updateEvento, Optional<List<MultipartFile>> fotos) {
 		if(fotos.isPresent()) updateFotosUseCase.updateForEventoId(eventoId, fotos.get());
 		
+		Course course = courseService.findCourseById(updateEvento.getCourseId());
 		Evento entity = eventoService.findById(eventoId);
-		entity.update(updateEvento.toEntity());
+		entity.update(updateEvento.toEntity(), course);
 		return dtov1.toDto(eventoService.update(entity));
 	}
 

@@ -157,8 +157,8 @@ public class Evento implements ContemFoto {
 		return "Evento";
 	}
 
-	public void update(Evento evento) {
-	    if (evento.getCourse() != null) this.setCourse(evento.getCourse());
+	public void update(Evento evento, Course course) {
+	    if (course != null) this.setCourse(course);
 	    if (evento.getDateFim() != null) this.setDateFim(evento.getDateFim());
 	    if (evento.getDateInicio() != null) this.setDateInicio(evento.getDateInicio());
 	    if (evento.getDescricao() != null) this.setDescricao(evento.getDescricao());
