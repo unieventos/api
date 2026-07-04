@@ -33,6 +33,12 @@ public class EventoCategoriaService {
 	}
 	
 	public void createNewEventoCategoria(List<String> categorias, String idEvento) {
-		categorias.forEach((categoria) -> this.createNewEventoCategoria(categoria, idEvento));;
+		categorias.forEach((categoria) -> this.createNewEventoCategoria(categoria, idEvento));
+	}
+	
+	@jakarta.transaction.Transactional
+	public void updateEventoCategoria(List<String> categorias, String idEvento) {
+		eventoCategoriaRepository.deleteByEventoId(idEvento);
+		createNewEventoCategoria(categorias, idEvento);
 	}
 }

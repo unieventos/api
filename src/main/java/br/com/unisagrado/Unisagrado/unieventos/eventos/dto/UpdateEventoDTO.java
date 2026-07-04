@@ -2,10 +2,7 @@ package br.com.unisagrado.Unisagrado.unieventos.eventos.dto;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import br.com.unisagrado.Unisagrado.unieventos.categoria.model.Categoria;
 import br.com.unisagrado.Unisagrado.unieventos.courses.model.Course;
 import br.com.unisagrado.Unisagrado.unieventos.eventos.model.Evento;
 import jakarta.validation.constraints.NotBlank;
@@ -94,10 +91,8 @@ public class UpdateEventoDTO {
 	}
 
 	public Evento toEntity() {
-		Set<Categoria> categorias = this.getCategorias().stream().map(Categoria::new).collect(Collectors.toSet());
-
 		return new Evento(this.getNomeEvento(), this.getDescricao(), this.getDateInicio(), this.getDateFim(),
-				categorias, new Course(this.getCourseId()));
+				null, new Course(this.getCourseId()));
 	}
 
 }
