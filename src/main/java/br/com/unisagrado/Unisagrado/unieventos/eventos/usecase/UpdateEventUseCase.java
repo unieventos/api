@@ -24,12 +24,12 @@ public class UpdateEventUseCase {
 	private CourseService courseService;
 
 	public UpdateEventUseCase(EventoService eventoService, EventoTranslatorDTOV1 dtov1,
-			UpdateFotosUseCase updateFotosUseCase) {
+			UpdateFotosUseCase updateFotosUseCase, CourseService courseService) {
 		this.eventoService = eventoService;
 		this.dtov1 = dtov1;
 		this.updateFotosUseCase = updateFotosUseCase;
+		this.courseService = courseService;
 	}
-
 
 	public EventoDTOV1 execute(String eventoId, UpdateEventoDTO updateEvento, Optional<List<MultipartFile>> fotos) {
 		if(fotos.isPresent()) updateFotosUseCase.updateForEventoId(eventoId, fotos.get());
