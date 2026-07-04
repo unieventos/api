@@ -34,8 +34,8 @@ public class Categoria {
 		this.nomeCategoria = nomeCategoria;
 	}
 	
-	public Categoria(String id) {
-		this.id = id;
+	public Categoria(String nomeCategoria) {
+		this.nomeCategoria = nomeCategoria;
 	}
 	
 	public Categoria() {
