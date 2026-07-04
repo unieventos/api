@@ -68,16 +68,14 @@ public class FotoController {
 
 	}
 	
-	@GetMapping( value = "/{id}/download", produces = MediaType.IMAGE_JPEG_VALUE)
+	@GetMapping( value = "/{id}/download", produces = MediaType.IMAGE_PNG_VALUE)
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "Foto encontrada"),
 			@ApiResponse(responseCode = "404", description = "Foto não encontrada"),
 			@ApiResponse(responseCode = "400", description = "Foto inválida") })
 	public ResponseEntity<Resource> downloadFoto(@PathVariable String id) {
 		Resource resource = downloadFotoUseCase.execute(id);
-		String contentType = "image/jpeg";
 
 	    return ResponseEntity.ok()
-	            .contentType(MediaType.parseMediaType(contentType))
 	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"foto_evento.jpg\"")
 	            .body(resource);
 	    
