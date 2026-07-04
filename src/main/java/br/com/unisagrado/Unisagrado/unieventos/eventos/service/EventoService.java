@@ -16,7 +16,6 @@ import br.com.unisagrado.Unisagrado.unieventos.eventos.repository.EventoReposito
 import br.com.unisagrado.Unisagrado.unieventos.eventos.translator.EventoTranslatorCreateEventRecord;
 import br.com.unisagrado.Unisagrado.unieventos.users.model.Usuario;
 import br.com.unisagrado.Unisagrado.unieventos.users.service.UserService;
-import jakarta.transaction.Transactional;
 
 @Service
 public class EventoService {
@@ -62,7 +61,6 @@ public class EventoService {
 		return eventoRepository.save(entity);
 	}
 	
-	@Transactional
 	public Evento update(Evento evento) {
 		return eventoRepository.save(evento);
 	}
