@@ -76,7 +76,7 @@ public class FotoController {
 		Resource resource = downloadFotoUseCase.execute(id);
 
 	    return ResponseEntity.ok()
-	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+resource.getFilename()+"\"")
+	            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"foto_evento.png\"")
 	            .body(resource);
 	    
 	}
